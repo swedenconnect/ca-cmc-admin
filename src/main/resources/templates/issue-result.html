@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" th:content="${htmlInfo.getHtmlDescription()}" />
+    <meta name="author" th:content="${htmlInfo.getHtmlAuthor()}"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <script src="webjars/jquery/3.6.0/jquery.min.js"></script>
+    <script src="webjars/popper.js/1.16.1/dist/umd/popper.min.js"></script>
+    <script src="webjars/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+    <script src="js/ca-common.js"></script>
+
+    <link rel="stylesheet" th:href="${bootstrapCss}"/>
+    <link rel="stylesheet" href="webjars/font-awesome/5.15.3/css/all.min.css"/>
+    <link rel="stylesheet" href="css/request.css">
+    <link rel="stylesheet" href="css/certDisp.css">
+    <link rel="stylesheet" href="css/general.css">
+
+    <title th:text="${htmlInfo.getHtmlTitlePrefix()} + ' - Issue result'"></title>
+</head>
+<body>
+<div class="container-fluid" style="width: 90%">
+    <div class="card" style="margin-top: 10px">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-2">
+                    <img style="float: left" height="50" th:src="${logoMap.get('logo').getImgSrc()}" >
+                </div>
+                <div class="col-md-8" style="text-align: center">
+                    <h2 th:text="${cmcConfig.getName()}"></h2>
+                </div>
+                <div class="col-md-2">
+                    <div style="float: right; margin-top: 10px; margin-right: 10px">
+                        <span>User:&nbsp;&nbsp;</span><b th:text="${currentUser.getName()}"></b>&nbsp;&nbsp;
+                        <i class="fas fa-sign-out-alt" onclick="window.location='logout'" style="color:#2c3e50;cursor: pointer" data-toggle="tooltip" title="Logout from service"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div style="float: right">
+                <button class="btn btn-sm btn-secondary" onclick="copyToClipboard('issued-cert-pem')" style="margin-right: 10px">Copy to clipboard</button>
+                <a class="btn btn-sm btn-info" th:href="'request?instance=' + ${instance}" style="margin-right: 10px">Issue more</a>
+                <a class="btn btn-sm btn-primary" th:href="'admin?instance=' + ${instance}" style="margin-right: 10px">Back</a>
+            </div>
+            <div style="margin-top: 25px">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h5>Issued certificate</h5>
+                        <div th:utext="${cert.toHtml(true)}"></div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <h5 style="padding-left: 20px">PEM formatted certificate</h5>
+                            <div id="issued-cert-pem" class="cert-pem-data" th:utext="${cert.toPEM().replaceAll('\n','<br>')}"></div>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

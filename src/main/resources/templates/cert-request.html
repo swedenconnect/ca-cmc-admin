@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<!--/*@thymesVar id="htmlInfo" type="se.swedenconnect.ca.cmcclient.configuration.HtmlServiceInfo"*/-->
+<!--/*@thymesVar id="bootstrapCss" type="java.lang.String"*/-->
+<!--/*@thymesVar id="logoMap" type="java.util.Map<java.lang.String,se.swedenconnect.ca.cmcclient.configuration.EmbeddedLogo>"*/-->
+<!--/*@thymesVar id="cmcConfig" type="se.swedenconnect.ca.cmcclient.configuration.cmc.CMCInstanceParams"*/-->
+<!--/*@thymesVar id="currentUser" type="se.swedenconnect.ca.cmcclient.authz.CurrentUser"*/-->
+<!--/*@thymesVar id="instance" type="java.lang.String"*/-->
+<!--/*@thymesVar id="profile" type="java.lang.String"*/-->
+<!--/*@thymesVar id="certificateProfile" type="se.swedenconnect.ca.cmcclient.ca.profiles.CertificateProfile"*/-->
+
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" th:content="${htmlInfo.getHtmlDescription()}" />
+    <meta name="author" th:content="${htmlInfo.getHtmlAuthor()}"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <script src="webjars/jquery/3.6.0/jquery.min.js"></script>
+    <script src="webjars/popper.js/1.16.1/dist/umd/popper.min.js"></script>
+    <script src="webjars/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+    <script src="webjars/bootbox/5.5.2/bootbox.js"></script>
+    <script src="webjars/bootbox/5.5.2/bootbox.locales.js"></script>
+    <script src="js/request.js"></script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        let profile = /*[[${profile}]]*/ '';
+        /*]]>*/
+    </script>
+
+
+    <link rel="stylesheet" th:href="${bootstrapCss}"/>
+    <link rel="stylesheet" href="webjars/font-awesome/5.15.3/css/all.min.css"/>
+    <link rel="stylesheet" href="css/request.css"/>
+    <link rel="stylesheet" href="css/general.css">
+
+    <title th:text="${htmlInfo.getHtmlTitlePrefix()}"></title>
+</head>
+<body>
+<div class="container-fluid" style="width: 90%">
+    <div class="card" style="margin-top: 10px">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-2">
+                    <img style="float: left" height="50" th:src="${logoMap.get('logo').getImgSrc()}" >
+                </div>
+                <div class="col-md-8" style="text-align: center">
+                    <h2 th:text="${cmcConfig.getName()} + ' - Issue Certificate'"></h2>
+                </div>
+                <div class="col-md-2">
+                    <div style="float: right; margin-top: 10px; margin-right: 10px">
+                        <span>User:&nbsp;&nbsp;</span>
+                        <b th:text="${currentUser.getName()}"></b>&nbsp;&nbsp;
+                        <i class="fas fa-sign-out-alt" onclick="window.location='logout'" style="color:#2c3e50;cursor: pointer" data-toggle="tooltip" title="Logout from service"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 style="color: #921e12">Issue Certificate</h4>
+                </div>
+                <div class="col-md-4">
+                    <h5 th:text="'Profile: ' + ${profile}"></h5>
+                </div>
+                <div class="col">
+                    <a style="float: right" class="btn btn-primary" th:href="'admin?instance=' + ${instance}">Back</a>
+                </div>
+            </div>
+            <form id="cert-req-form" action="issue" method="post">
+                <input type="hidden" name="instance" th:value="${instance}">
+                <div class="row" style="margin-bottom: 15px;">
+                    <div class="col-sm-6">
+                        <h6>Subject attributes</h6>
+                        <div th:each="attrType:${certificateProfile.getAttributeRequestParameters()}" class="form-group">
+                            <div class="row">
+                                <div class="col-xl-2" style="min-width: 220px">
+                                    <label th:for="${attrType.name()} + 'Input'" th:text="${attrType.getInputLabel()}"></label>
+                                </div>
+                                <div class="col" th:switch="${certificateProfile.getFixedValueMap().containsKey(attrType.name())}">
+                                    <input th:case="true" type="text" class="form-control" th:name="${attrType.name()}" th:id="${attrType.name()} + 'Input'"
+                                    th:value="${certificateProfile.getFixedValueMap().get(attrType.name())}" disabled>
+                                    <input th:case="false" type="text" class="form-control" th:name="${attrType.name()}" th:id="${attrType.name()} + 'Input'">
+                                </div>
+                            </div>
+                        </div>
+                        <th:block th:if="${!certificateProfile.getSubjectAltNameRequestParameters().isEmpty()}">
+                            <hr>
+                            <h6>Alternative names</h6>
+                            <div th:each="altName:${certificateProfile.getSubjectAltNameRequestParameters()}" class="form-group">
+                                <div class="row">
+                                    <div class="col-xl-2" style="min-width: 220px">
+                                        <label th:for="${altName.name()} + 'Input'" th:text="${altName.getInputLabel()}"></label>
+                                    </div>
+                                    <div class="col" th:switch="${certificateProfile.getFixedValueMap().containsKey(altName.name())}">
+                                        <input th:case="true" type="text" class="form-control" th:name="${altName.name()}" th:id="${altName.name()} + 'Input'"
+                                        th:value="${certificateProfile.getFixedValueMap().get(altName.name())}" disabled>
+                                        <input th:case="false" type="text" class="form-control" th:name="${altName.name()}" th:id="${altName.name()} + 'Input'">
+                                    </div>
+                                </div>
+                            </div>
+                        </th:block>
+                        <th:block th:if="${!certificateProfile.getEKURequestParameters().isEmpty()}">
+                            <hr>
+                            <h6>Key purpose</h6>
+                            <div class="eku-input-frame">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" name="noEkuInput" id="noEkuInput" checked onclick="ekuSettings(true)">
+                                    <label class="form-check-label" for="noEkuInput">No usage constraints (valid for all usages)</label>
+                                </div>
+                                <hr>
+                                <div th:each="ekuType:${certificateProfile.getEKURequestParameters()}" class="form-check">
+                                    <input type="checkbox" class="form-check-input" th:name="${ekuType.name()}" th:id="${ekuType.name()} + 'Input'" onclick="ekuSettings(false)">
+                                    <label class="form-check-label" th:for="${ekuType.name()} + 'Input'" th:text="${ekuType.getInputLabel()}"></label>
+                                </div>
+                            </div>
+                        </th:block>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="certRequestInputText">Provide PKCS#10 request or self signed X.509 certificate</label>
+                            <textarea class="form-control cert-pem-data" name="certRequest" id="certRequestInputText" rows="25" spellcheck="false"></textarea>
+                        </div>
+                        <div class="cert-req-error-frame" id="requestDataParsingResultDiv"></div>
+                    </div>
+                </div>
+                <button type="button" id="sendRequestButton" class="btn btn-primary" onclick="sendRequest()">Send request</button>
+
+            </form>
+
+            <br/>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

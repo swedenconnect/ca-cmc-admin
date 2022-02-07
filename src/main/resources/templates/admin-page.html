@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" th:content="${htmlInfo.getHtmlDescription()}" />
+    <meta name="author" th:content="${htmlInfo.getHtmlAuthor()}"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <script src="webjars/jquery/3.6.0/jquery.min.js"></script>
+    <script src="webjars/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+    <script src="webjars/bootbox/5.5.2/bootbox.js"></script>
+    <script src="webjars/bootbox/5.5.2/bootbox.locales.js"></script>
+    <script src="webjars/popper.js/1.16.1/dist/umd/popper.min.js"></script>
+    <script src="webjars/jquery-cookie/1.4.1-1/jquery.cookie.js"></script>
+    <script src="js/admin-page.js"></script>
+    <script src="js/ca-common.js"></script>
+    <script src="js/page-list.js"></script>
+
+    <link rel="stylesheet" th:href="${bootstrapCss}"/>
+    <link rel="stylesheet" href="webjars/font-awesome/5.15.3/css/all.min.css"/>
+    <link rel="stylesheet" href="css/result.css"/>
+    <link rel="stylesheet" href="css/certDisp.css">
+    <link rel="stylesheet" href="css/general.css">
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        let revokeKey = /*[[${revokeKey}]]*/ '';
+        let instance = /*[[${instance}]]*/ '';
+        /*]]>*/
+    </script>
+
+    <title th:text="${htmlInfo.getHtmlTitlePrefix()} + ' - Administration page'"></title>
+</head>
+<body>
+<div class="container-fluid" style="width: 90%">
+    <div class="card" style="margin-top: 10px">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-2">
+                    <img style="float: left" height="50" th:src="${logoMap.get('logo').getImgSrc()}" >
+                </div>
+                <div class="col-md-8" style="text-align: center">
+                    <h2 th:text="${cmcConfig.getName()}"></h2>
+                </div>
+                <div class="col-md-2">
+                    <div style="float: right; margin-top: 10px; margin-right: 10px">
+                        <span>User:&nbsp;&nbsp;</span><b th:text="${currentUser.getName()}"></b>&nbsp;&nbsp;
+                        <i class="fas fa-sign-out-alt" onclick="window.location='logout'" style="color:#2c3e50;cursor: pointer" data-toggle="tooltip" title="Logout from service"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <span style="float: right">
+                <a th:if="${certificateProfile != null}" class="btn btn-sm btn-secondary" th:href="'request?instance=' + ${instance}">Issue Certificate</a> &nbsp;&nbsp;&nbsp;
+                <a class="btn btn-sm btn-primary" href="main">Home</a>
+            </span>
+            <h4>Certificate issuer</h4>
+            <table class="table table-sm" style="margin-top: 20px">
+                <tr>
+                    <td style="width: 200px">Description</td>
+                    <td th:text="${cmcConfig.getDescription()}"></td>
+                </tr>
+                <tr>
+                    <td>CA Chain</td>
+                    <td>
+                        <table style="width: 100%">
+                            <tr th:each="caCert, certStat:${caChain}">
+                                <td class="in-line-table-td" th:text="${caCert.getSubject().toString()}"></td>
+                                <td class="in-line-table-td" style="text-align: right">
+                                    <i class="fas fa-folder-open icon-def" th:attr="onclick='viewCaChainCert('+ ${certStat.count  - 1} + ',\'' + ${instance} + '\')'" title="Show certificate"></i>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr th:if="${ocspCertSubject != null}">
+                    <td>OCSP certificate</td>
+                    <td>
+                        <table style="width: 100%">
+                            <tr>
+                                <td class="in-line-table-td" th:text="${ocspCertSubject}"></td>
+                                <td class="in-line-table-td" style="text-align: right">
+                                    <i class="fas fa-folder-open icon-def" th:attr="onclick='viewCaChainCert(-1,\'' + ${instance} + '\')'" title="Show certificate"></i>
+                            </tr>
+                        </table>
+                    </td>
+
+                </tr>
+            </table>
+            <div class="row">
+                <div class="col-xl-2">
+                    <h5>Certificates</h5>
+                </div>
+                <div class="col-xl-3">
+                    <label for="pageSizeSelect" class="form-label">Page size&nbsp;</label>
+                    <select class="form-select-lg" id="pageSizeSelect" aria-label="Items per page" onchange="pageSize()">
+                        <option th:each="pageSize:${pageSizes}" th:value="${pageSize}" th:text="${pageSize}" th:selected="${page.getPageSize() == pageSize}"></option>
+                    </select>&nbsp;
+                    <label for="sortBySelect" class="form-label">Sort by&nbsp;</label>
+                    <select class="form-select-lg" id="sortBySelect" aria-label="Items per page" onchange="pageSortBy()">
+                        <option th:each="dispSortBy:${T(se.swedenconnect.ca.cmcclient.data.DisplaySortBy).values()}" th:value="${dispSortBy.getSortBy().name()}" th:text="${dispSortBy.getDisplayName()}"
+                                th:selected="${page.sortBy.equals(dispSortBy.getSortBy())}"></option>
+                    </select>
+                </div>
+                <div class="col-xl-2" style="text-align: right">
+                    <i class="fas fa-fast-backward icon-def" onclick="pageFirst()" title="First page"></i>&nbsp;&nbsp
+                    <i class="fas fa-step-backward icon-def" th:onclick="'pageBack(' + ${page.getNumberOfPages()} +')'" title="Previous page"></i>&nbsp;&nbsp;&nbsp;
+                    <i class="fas fa-step-forward icon-def" th:onclick="'pageForward(' + ${page.getNumberOfPages()} +')'" title="Next page"></i>&nbsp;&nbsp;
+                    <i class="fas fa-fast-forward icon-def" th:onclick="'pageLast(' + ${page.getNumberOfPages()} +')'" title="Last page"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <i th:if="${!page.isDescending()}" class="fas fa-angle-double-down icon-def" onclick="pageDescending()" title="Ascending (click to select descending order)"></i>
+                    <i th:if="${page.isDescending()}"  class="fas fa-angle-double-up icon-def" onclick="pageAscending()" title="Descending (click to select ascending order)"></i>
+                </div>
+
+                <div class="col-xl-3" style="text-align: right">
+                    Page&nbsp;
+                    <span th:text="${page.getPage() + 1}" style="font-weight: bold"></span>&nbsp;
+                    of&nbsp;
+                    <span th:text="${page.getNumberOfPages()}" style="font-weight: bold"></span>&nbsp;&nbsp;&nbsp;
+                    Total:&nbsp;
+                    <span class="cert-count" th:text="${justValidCerts ? nonRevokedCount : certCount}"></span>&nbsp;&nbsp;
+                </div>
+                <div class="col-xl-2" style="text-align: right">
+                    <i th:if="${!justValidCerts}" class="far fa-eye icon-def" onclick="setJustValidCerts2(true)" title="Click to hide revoked"></i>
+                    <i th:if="${justValidCerts}" class="far fa-eye-slash icon-def" th:onclick="setJustValidCerts2(false)" title="Click to show revoked"></i>
+                    &nbsp;
+                    <i class="far fa-window-close" style="color: #921e12;font-size: x-large"></i>
+
+<!--
+                    <input type="checkbox" class="form-check-input" id="justValidCertsInput" th:attr="onchange='setJustValidCerts(\'' + ${instance} + '\')'" th:checked="${justValidCerts}">
+                    <label for="justValidCertsInput" class="form-check-label" style="padding-top: 2px">Hide revoked certificates</label>
+-->
+                </div>
+            </div>
+            <table class="table table-striped table-sm">
+                <tr >
+                    <td class="ca-service-table-head" style="width: 360px">Serial number</td>
+                    <td class="ca-service-table-head">Subject name</td>
+                    <td class="ca-service-table-head" style="width: 200px">Valid from</td>
+                    <td class="ca-service-table-head" style="width: 200px">Expiry date</td>
+                    <td class="ca-service-table-head" style="width: 80px">Status</td>
+                    <td th:if="${!justValidCerts}" class="ca-service-table-head" style="width: 200px">Revocation time</td>
+                    <td class="ca-service-table-head" style="text-align: right;padding-right: 10px;width: 80px">Action</td>
+                </tr>
+                <tr th:each="cert, certStat : ${certList}">
+                    <td th:class="${cert.isExpired() ? 'invalid-cert':''}" th:text="${cert.getSerialNumber().toString(16)}" style="font-family: 'Courier New', serif; color: #284a6c"></td>
+                    <td th:class="${cert.isExpired() ? 'invalid-cert':''}" th:text="${cert.getSubjectDn()}"></td>
+                    <td th:class="${cert.isExpired() ? 'invalid-cert':''}" th:text="${cert.getIssueDate()}"></td>
+                    <td th:class="${cert.isExpired() ? 'invalid-hl':''}" th:text="${cert.getExpiryDate()}"></td>
+                    <td th:text="${cert.isExpired() ? 'Expired' : (cert.isRevoked() ? 'Revoked':'Valid')}"></td>
+                    <td th:if="${!justValidCerts}" th:text="${cert.getRevocationDate()}"></td>
+                    <td style="text-align: right">
+                        <i class="fas fa-bars icon-def" th:attr="onclick='displayCert(\''
+                    +${cert.getSerialNumber().toString(16)}+'\','
+                    +${cert.isRevoked()}+',\''
+                    +${instance}+'\');'" title="Manage certificate"></i>
+
+<!--
+
+                        <button class="btn btn-primary btn-smaller" th:attr="onclick='displayCert(\''
+                    +${cert.getSerialNumber().toString(16)}+'\','
+                    +${cert.isRevoked()}+',\''
+                    +${instance}+'\');'">Manage</button></td>
+-->
+                </tr>
+            </table>
+            <br/>
+        </div>
+    </div>
+</div>
+
+<!-- Signed document display box -->
+<div id="overlay-data-div" class="overlay-data-bgr">
+    <div class="card overlay-data-panel">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-4"><h4>X.509 Certificate</h4></div>
+                <div class="col-md-4" style="text-align: center">
+                    <h4 class="cert-revoked-label" id="certificate-revoked-label">Certificate is revoked</h4>
+                </div>
+                <div class="col-md-4" style="text-align: right">
+                    <button class="btn btn-sm btn-secondary" onclick="copyToClipboard('overlay-cert-pem-div')" style="margin-right: 10px">Copy to clipboard</button>
+                    <button class="btn btn-sm btn-danger" id="cert-revoke-btn" style="margin-right: 10px">Revoke</button>
+                    <button class="btn btn-sm btn-primary" onclick="$('#overlay-data-div').fadeOut(700)">close</button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div id="overlay-display-data-div">
+                <div class="row" style="width: 90%; margin-left: 10px">
+                    <div class="col-lg-6" id="overlay-cert-html-div"></div>
+                    <div class="col-lg-6 cert-pem-data" id="overlay-cert-pem-div"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

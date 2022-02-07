@@ -1,0 +1,59 @@
+.ca-service-table-head {
+    background-color: #284a6c !important;
+    color: #ffffff !important;
+    font-weight: bold;
+}
+
+article .alert-box {
+    margin-bottom: 35px;
+    padding: 22px 30px 26px;
+    background-color: #f8d7da;
+}
+article .alert-box p:last-child {
+    margin-bottom: 0;
+}
+
+article .info-box {
+    margin-bottom: 35px;
+    padding: 22px 30px 26px;
+    background-color: #DDF3EA;
+}
+article .info-box p:last-child {
+    margin-bottom: 0;
+}
+
+.invalid-cert{
+    text-decoration: line-through !important;
+    color: #8e8c84 !important;
+}
+.invalid-hl{
+    font-weight: bold !important;
+    color: #921e12 !important;
+}
+
+.icon-def {
+    color: #325d88;
+    font-size: x-large;
+    cursor: pointer;
+}
+
+.icon-def:hover {
+    color: #712b29;
+    font-size: x-large;
+    cursor: pointer;
+}
+
+.icon-large {
+    color: #325d88;
+    font-size: xx-large;
+    cursor: pointer;
+}
+.icon-large:hover {
+    color: #712b29;
+    font-size: xx-large;
+    cursor: pointer;
+}
+
+.cert-count {
+    font-weight: bold;
+}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" th:content="${htmlInfo.getHtmlDescription()}" />
+    <meta name="author" th:content="${htmlInfo.getHtmlAuthor()}"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <script src="webjars/jquery/3.6.0/jquery.min.js"></script>
+    <script src="webjars/popper.js/1.16.1/dist/umd/popper.min.js"></script>
+    <script src="webjars/bootstrap/5.1.3/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" th:href="${bootstrapCss}"/>
+
+    <title th:text="${htmlInfo.getHtmlTitlePrefix()} + ' - Error page'"></title>
+</head>
+<body>
+<div class="container">
+    <div class="card" style="margin-top: 10px">
+        <div class="card-header" style="text-align: center">
+            <h2>
+                <img align="left" th:src="${logoMap.get('logo').getImgSrc()}" alt="Logo" height="50">
+                &nbsp;Error page
+            </h2>
+        </div>
+        <div class="card-body">
+            <h5>An error has occurred.</h5>
+            <!--/*@thymesVar id="message" type="java.lang.String"*/-->
+            <div th:if="${message != null}" th:text="${message}" style="margin-bottom: 20px; color: darkred"></div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

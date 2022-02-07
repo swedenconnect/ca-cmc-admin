@@ -1,0 +1,36 @@
+.cert-pem-data {
+    font-family: "Courier New";
+    font-size: medium;
+    padding-left: 20px;
+}
+
+.cert-req-error-frame {
+    padding: 10px 10px;
+    border: 1px solid #8A2817!important;
+    border-radius: 5px;
+    color: #C03821;
+    background-color: #FFF7F6;
+    margin-bottom: 10px;
+}
+
+.cert-req-confirm-div {
+    margin-top: 25px;
+    padding: 10px 10px;
+    border: 1px solid #8A2817!important;
+    border-radius: 5px;
+}
+
+.cert-req-attr-name {
+    color: #909090;
+}
+
+.main-color-text {
+    color: #284a6c;
+}
+
+.eku-input-frame {
+    margin-top: .5rem;
+    padding: 10px 10px;
+    border: 1px solid #ced4da!important;
+    border-radius: 5px;
+}

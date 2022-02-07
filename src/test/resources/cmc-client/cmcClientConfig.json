@@ -1,0 +1,16 @@
+{
+  "instances" : [ {
+    "displayName" : "Test CA",
+    "keyStoreId" : "cmcClientKeyStore",
+    "caCert" : "ca/ca01.crt",
+    "cmcSigner" : "ca/ca-cmc.crt",
+    "url" : "http://localhost:8080/ca/cmc/ca01",
+    "algorithm" : "http://www.w3.org/2001/04/xmldsig-more#ecdsa-sha256"
+  } ],
+  "keyStores" : [ {
+    "id" : "cmcClientKeyStore",
+    "location" : "cmc-client.jks",
+    "password" : "Test1234",
+    "alias" : "cmc-client"
+  } ]
+}
