@@ -37,7 +37,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>11</java.version>
         <credentials-support.version>1.1.0</credentials-support.version>
-        <sigvaltrust-commons.version>1.0.1</sigvaltrust-commons.version>
+        <sigvaltrust-commons.version>1.0.2</sigvaltrust-commons.version>
         <ca-engine.version>1.1.1</ca-engine.version>
         <ca-cmc.version>1.1.1</ca-cmc.version>
         <print-cert.version>1.0.3</print-cert.version>
