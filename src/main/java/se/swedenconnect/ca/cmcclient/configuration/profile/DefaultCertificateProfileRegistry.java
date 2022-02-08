@@ -1,39 +1,46 @@
-package se.swedenconnect.ca.cmcclient.ca.profiles.impl;
+/*
+ * Copyright (c) 2022.  Agency for Digital Government (DIGG)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package se.swedenconnect.ca.cmcclient.configuration.profile;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-import se.swedenconnect.ca.cmcclient.ca.profiles.*;
-import se.swedenconnect.ca.cmcclient.ca.profiles.impl.CACertificateProfile;
-import se.swedenconnect.ca.cmcclient.ca.profiles.impl.DefaultClientCertProfile;
-import se.swedenconnect.ca.cmcclient.ca.profiles.impl.TLSClientCertProfile;
-import se.swedenconnect.ca.cmcclient.configuration.profile.CertificateProfileProperties;
+import se.swedenconnect.ca.cmcclient.ca.profiles.CertificateProfile;
+import se.swedenconnect.ca.cmcclient.ca.profiles.CertificateProfileRegistry;
+import se.swedenconnect.ca.cmcclient.ca.profiles.impl.PropertyBasedCertificateProfile;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
- * Description
+ * Provides a certificate profile registry. This registry can be loaded as a bean and extended with new registered certificate profiles.
+ * A registered certificate profile defines the content of certificates issued according to this profile.
  *
  * @author Martin Lindström (martin@idsec.se)
  * @author Stefan Santesson (stefan@idsec.se)
  */
 @Slf4j
 @Component
-@Profile("base")
 public class DefaultCertificateProfileRegistry implements CertificateProfileRegistry {
 
-  private Map<String, CertificateProfile> certificateProfileMap;
-
-  private static final Map<String, String> fixedSECountryValues;
-
-  static {
-    fixedSECountryValues = new HashMap<>();
-    fixedSECountryValues.put(AttrReqParameter.country.name(), "SE");
-  }
+  private final Map<String, CertificateProfile> certificateProfileMap;
 
   @Autowired
   public DefaultCertificateProfileRegistry(Map<String, CertificateProfileProperties.Profile> propertyProfileDataMap)
@@ -51,16 +58,12 @@ public class DefaultCertificateProfileRegistry implements CertificateProfileRegi
     }
   }
 
-
-  /**
-   * Get the current certificate profile from the registry
-   *
-   * @return map of certificate profiles
-   */
+  /** {@inheritDoc} */
   @Override public Map<String, CertificateProfile> getCertificateProfileMap() {
     return certificateProfileMap;
   }
 
+  /** {@inheritDoc} */
   @Override public void registerCertificateProfile(String name, CertificateProfile certificateProfile) {
     log.info("Registered certificate profile {} implementing {}", name, certificateProfile == null ? "null" : certificateProfile.getClass());
     certificateProfileMap.put(name, certificateProfile);

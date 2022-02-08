@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021. Agency for Digital Government (DIGG)
+ * Copyright (c) 2021-2022.  Agency for Digital Government (DIGG)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import se.swedenconnect.ca.cmc.api.CMCCertificateModelBuilder;
-import se.swedenconnect.ca.cmc.api.CMCRequestParser;
-import se.swedenconnect.ca.cmc.api.CMCResponseParser;
 import se.swedenconnect.ca.cmc.api.client.CMCClient;
 import se.swedenconnect.ca.cmc.api.data.CMCFailType;
 import se.swedenconnect.ca.cmc.api.data.CMCResponse;
@@ -124,7 +122,7 @@ public class CertIssuanceController {
     model.addAttribute("certificateProfile", certificateProfile);
     model.addAttribute("profile", profile);
 
-    return certificateProfile.getHtmlTamplatePage();
+    return certificateProfile.getHtmlTemplatePage();
   }
 
   @PostMapping("/issue")

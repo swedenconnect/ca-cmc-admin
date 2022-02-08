@@ -1,6 +1,6 @@
 FROM openjdk:11-jre
 
-ADD target/sigvaltrust-ca-1.0.4-SNAPSHOT.jar /app.jar
+ADD target/cmc-ca-client-base-1.0.0.jar /app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]
 
 # Main web port

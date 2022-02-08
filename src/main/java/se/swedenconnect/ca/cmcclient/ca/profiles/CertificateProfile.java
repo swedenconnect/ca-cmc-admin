@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2022.  Agency for Digital Government (DIGG)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package se.swedenconnect.ca.cmcclient.ca.profiles;
 
 import se.swedenconnect.ca.cmc.api.CMCCertificateModelBuilder;
@@ -8,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Description
+ * Interface for a certificate profile that determines the content of issued certificates
  *
  * @author Martin Lindström (martin@idsec.se)
  * @author Stefan Santesson (stefan@idsec.se)
@@ -34,7 +50,7 @@ public interface CertificateProfile {
    * The name of the page returned to provide user input
    * @return page template name
    */
-  String getHtmlTamplatePage();
+  String getHtmlTemplatePage();
 
   /**
    * Get request parameters for attributes that should be provided to the certificate request page
