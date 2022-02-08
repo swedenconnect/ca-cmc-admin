@@ -4,6 +4,7 @@
 ---
 # CA admin GUI based on CMC API
 
+![Certificate request](documentation/img/ca-cmc-admin-ui.png)
 
 This repo contains the source code for a detached CA admin application service that controls a CA service using a CMC API. 
 The source code builds a Spring Boot application that may be deployed as is, or may be built into a Docker image using any of the provided Dockerfile examples.
