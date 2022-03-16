@@ -74,7 +74,7 @@ public class GenericHttpConnector {
   }
 
   /**
-   * Get resrouce from URL using either GET or POST. POST is automatically selected if some data to be posted is included as an argument
+   * Get resource from URL using either GET or POST. POST is automatically selected if some data to be posted is included as an argument
    * @param requestUrl url for the resource
    * @param data data to be posted or null to select HTTP GET
    * @param propertyMap map of HTTP connect properties to add to the HTTP connection. The map key is the property name and the map value is the property value
@@ -86,7 +86,7 @@ public class GenericHttpConnector {
   }
 
   /**
-   * Get resrouce from URL using either GET or POST. POST is automatically selected if some data to be posted is included as an argument
+   * Get resource from URL using either GET or POST. POST is automatically selected if some data to be posted is included as an argument
    * @param requestUrl url for the resource
    * @param connectTimeout milliseconds allowed to establish an HTTP connection with the resource
    * @param readTimeout milliseconds allowed to download the resource data
