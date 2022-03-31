@@ -12,7 +12,7 @@ RUN apt-get update && apt-get install -y pcscd libccid libpcsclite-dev libssl-de
 # Setup softhsm
 RUN rm -rf /var/lib/softhsm/tokens && mkdir /var/lib/softhsm/tokens
 
-ADD target/cmc-ca-client-base-1.0.1-SNAPSHOT.jar /app.jar
+ADD target/cmc-ca-client-base-1.0.1.jar /app.jar
 COPY src/main/resources/cfg/start.sh /
 
 ENTRYPOINT /start.sh
