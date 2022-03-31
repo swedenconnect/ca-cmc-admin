@@ -1,6 +1,6 @@
 
 ---
-# CURRENT BUILD VERSION = 1.0.0
+# CURRENT BUILD VERSION = 1.0.1
 ---
 # CA admin GUI based on CMC API
 
@@ -25,7 +25,7 @@ To build the eDelivery CA, a total of 3 projects need to be built in the followi
  1. https://github.com/swedenconnect/ca-engine (version 1.1.1)
  2. https://github.com/swedenconnect/ca-cmc (version 1.1.1)
  3. https://github.com/swedenconnect/sigvaltrust-service/tree/main/commons (version 1.0.2)
- 4. https://github.com/swedenconnect/ca-cmc-admin (This repo) (version 1.0.0)
+ 4. https://github.com/swedenconnect/ca-cmc-admin (This repo) (version 1.0.1)
 
 The master branch of each repo holds the latest code under development. This is typically a SNAPSHOT version.
 For deployment, it is advisable to build a release version. Each release have a corresponding release branch. To build the source code, select the release branch of the latest release version before building the source code.
