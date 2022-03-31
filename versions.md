@@ -1,11 +1,12 @@
 # CA CMC Admin versions
 
-**Latest current version 1.0.1**
+**Latest current version 1.0.2**
 
-| Version | Comment                                   | Date       |
-|---------|-------------------------------------------|------------|
-| 1.0.0   | Initial version                           | 2022-02-08 |
-| 1.0.1   | Initial version                           | 2022-03-31 |
+| Version | Comment                                                      | Date       |
+|---------|--------------------------------------------------------------|------------|
+| 1.0.0   | Initial version                                              | 2022-02-08 |
+| 1.0.1   | temp fix of Spring boot RCE vulnerability                    | 2022-03-31 |
+| 1.0.2   | Upgrading to spring boot 2.6.6 as permanent solution to RCE  | 2022-03-31 |
 
 ## Important release notes (most recent on top)
 
