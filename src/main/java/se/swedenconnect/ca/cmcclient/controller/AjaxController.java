@@ -84,7 +84,7 @@ public class AjaxController {
       return null;
     }
 
-    final CMCResponse cmcResponse = cmcClient.getCertRequest(new BigInteger(serialNumberHexStr, 16));
+    final CMCResponse cmcResponse = cmcClient.getIssuedCertificate(new BigInteger(serialNumberHexStr, 16));
     final List<X509Certificate> returnCertificates = cmcResponse.getReturnCertificates();
 
     if (returnCertificates == null || returnCertificates.size() != 1) {

@@ -28,6 +28,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.ResourceUtils;
 import se.swedenconnect.ca.cmc.api.client.CMCClient;
+import se.swedenconnect.ca.cmc.api.client.impl.DefaultCMCClient;
 import se.swedenconnect.ca.cmcclient.ca.CaRepositoryCollector;
 import se.swedenconnect.ca.cmcclient.configuration.cmc.CMCInstanceParams;
 import se.swedenconnect.ca.cmcclient.configuration.cmc.CMCProperties;
@@ -89,7 +90,7 @@ public class CAClientServiceConfiguration {
         new FileInputStream(ResourceUtils.getFile(cmcInstanceParams.getResponseCertificateLocation())));
       X509Certificate caCert = CertificateUtils.decodeCertificate(
         new FileInputStream(ResourceUtils.getFile(cmcInstanceParams.getCaCertificateLocation())));
-      CMCClient cmcClient = new CMCClient(
+      CMCClient cmcClient = new DefaultCMCClient(
         cmcInstanceParams.getRequestUrl(),
         serviceCredentials.get(ServiceCredential.cmc).getPrivateKey(),
         serviceCredentials.get(ServiceCredential.cmc).getCertificate(),

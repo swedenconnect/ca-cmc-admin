@@ -184,7 +184,7 @@ public class CertIssuanceController {
         nameModel, includeCrlDp, includeOcspUrl);
       certificateProfile.appendCertificateModel(certificateModelBuilder, requestData.getPublicKey(), parameterMap);
 
-      final CMCResponse cmcResponse = cmcClient.certIssuerRequest(certificateModelBuilder.build());
+      final CMCResponse cmcResponse = cmcClient.issueCertificate(certificateModelBuilder.build());
       final CMCResponseStatus responseStatus = cmcResponse.getResponseStatus();
       if (!responseStatus.getStatus().equals(CMCStatusType.success)) {
         final CMCFailType failType = responseStatus.getFailType();

@@ -132,7 +132,7 @@ public class AdminController {
     final CAInformation caInformation = cmcClient.getCAInformation(true);
     final PageControlData pageControlData = getPageControlData(pageCookieVal, caInformation, justValidCerts);
 
-    CMCResponse listCertResponse = cmcClient.listCertificatesRequest(
+    CMCResponse listCertResponse = cmcClient.listCertificates(
       pageControlData.getPageSize(),
       pageControlData.getPage(),
       pageControlData.getSortBy(),
@@ -280,7 +280,7 @@ public class AdminController {
     // Clear revoke key to prevent double posting
     httpSession.removeAttribute("revokeKey");
 
-    final List<X509Certificate> returnCertificates = cmcClient.getCertRequest(certSerial).getReturnCertificates();
+    final List<X509Certificate> returnCertificates = cmcClient.getIssuedCertificate(certSerial).getReturnCertificates();
 
     if (returnCertificates == null || returnCertificates.size() != 1) {
       log.debug("Revocation request for non existent certificate - Request rejected");
@@ -288,7 +288,7 @@ public class AdminController {
         instance, htmlServiceInfo, bootstrapCss, logoMap);
     }
 
-    final CMCResponse cmcResponse = cmcClient.revokeCertificateRequest(certSerial, CRLReason.unspecified, new Date());
+    final CMCResponse cmcResponse = cmcClient.revokeCertificate(certSerial, CRLReason.unspecified, new Date());
 
     final CMCStatus cmcStatus = cmcResponse.getResponseStatus().getStatus().getCmcStatus();
     if (cmcStatus.equals(CMCStatus.success)) {

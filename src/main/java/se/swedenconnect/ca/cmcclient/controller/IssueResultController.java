@@ -98,7 +98,7 @@ public class IssueResultController {
     //model.addAttribute("basicConfig", basicConfig);
 
     final CMCClient cmcClient = cmcClientMap.get(instance);
-    final CMCResponse getCertResponse = cmcClient.getCertRequest(certSerial);
+    final CMCResponse getCertResponse = cmcClient.getIssuedCertificate(certSerial);
     final List<X509Certificate> returnCertificates = getCertResponse.getReturnCertificates();
 
     if (returnCertificates == null || returnCertificates.size() != 1) {
