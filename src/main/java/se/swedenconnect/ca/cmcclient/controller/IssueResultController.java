@@ -25,6 +25,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import se.idsec.utils.printcert.PrintCertificate;
+import se.swedenconnect.ca.cmc.CMCException;
 import se.swedenconnect.ca.cmc.api.client.CMCClient;
 import se.swedenconnect.ca.cmc.api.data.CMCResponse;
 import se.swedenconnect.ca.cmcclient.authz.CurrentUser;
@@ -71,7 +72,7 @@ public class IssueResultController {
 
   @RequestMapping("/issue-result")
   public String getIssuerResultPage(HttpServletRequest servletRequest, Model model, Authentication authentication,
-    @RequestParam("instance") String instance) throws CertificateException, IOException {
+    @RequestParam("instance") String instance) throws CertificateException, IOException, CMCException {
 
     // Get current user
     CurrentUser currentUser = new CurrentUser(authentication);

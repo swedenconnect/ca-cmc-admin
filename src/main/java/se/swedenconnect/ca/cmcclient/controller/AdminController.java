@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import se.idsec.utils.printcert.PrintCertificate;
+import se.swedenconnect.ca.cmc.CMCException;
 import se.swedenconnect.ca.cmc.api.client.CMCClient;
 import se.swedenconnect.ca.cmc.api.client.CMCResponseExtract;
 import se.swedenconnect.ca.cmc.api.data.CMCResponse;
@@ -105,7 +106,7 @@ public class AdminController {
   public String adminPage(HttpServletRequest servletRequest, @RequestParam("instance") String instance, Model model,
     Authentication authentication, @CookieValue(value = "justValidCerts", required = false) String justValidCertsCookie,
     @CookieValue(value = "pageControlCookie", required = false) String pageCookieVal)
-    throws IOException {
+    throws CMCException {
 
     // Get current user
     CurrentUser currentUser = new CurrentUser(authentication);
@@ -238,7 +239,7 @@ public class AdminController {
   public String revokeCertificate(HttpServletRequest servletRequest, @RequestParam("instance") String instance, Model model,
     Authentication authentication,
     @RequestParam("serialNumber") String serialNumberHex, @RequestParam("revokeKey") String revokeKey)
-    throws IOException, CertificateException {
+    throws CMCException {
 
     // Get current user
     CurrentUser currentUser = new CurrentUser(authentication);
@@ -350,16 +351,5 @@ public class AdminController {
       }
     }
   }
-
-/*
-  private String getErrorPage(Model model, String errorMessage, String instance) {
-    model.addAttribute("htmlInfo", htmlServiceInfo);
-    model.addAttribute("bootstrapCss", bootstrapCss);
-    model.addAttribute("logoMap", logoMap);
-    model.addAttribute("errorMessage", errorMessage);
-    model.addAttribute("returnUrl", "admin?instance=" + instance);
-    return "general-error";
-  }
-*/
 
 }

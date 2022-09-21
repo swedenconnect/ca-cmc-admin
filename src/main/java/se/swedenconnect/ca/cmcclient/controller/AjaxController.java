@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import se.idsec.utils.printcert.PrintCertificate;
+import se.swedenconnect.ca.cmc.CMCException;
 import se.swedenconnect.ca.cmc.api.client.CMCClient;
 import se.swedenconnect.ca.cmc.api.data.CMCResponse;
 import se.swedenconnect.ca.cmc.model.admin.response.CAInformation;
@@ -68,7 +69,8 @@ public class AjaxController {
 
   @RequestMapping("/getCertData")
   public String getCertContentData(HttpServletRequest servletRequest, @RequestParam("serialNumber") String serialNumberHexStr,
-    @RequestParam("instance") String instance, Authentication authentication) throws CertificateException, IOException {
+    @RequestParam("instance") String instance, Authentication authentication)
+    throws CertificateException, IOException, CMCException {
 
     // Get and validate CA service
     if (!cmcClientMap.containsKey(instance)) {
@@ -101,7 +103,8 @@ public class AjaxController {
 
   @RequestMapping("/getChainCertData")
   public String getCaChainCert(HttpServletRequest servletRequest, @RequestParam("idx") int idx,
-    @RequestParam("instance") String instance, Authentication authentication) throws IOException, CertificateException {
+    @RequestParam("instance") String instance, Authentication authentication)
+    throws IOException, CertificateException, CMCException {
 
     // Get and validate CA service
     if (!cmcClientMap.containsKey(instance)) {
