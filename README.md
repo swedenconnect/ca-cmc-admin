@@ -28,23 +28,16 @@ Build with the following command:
 The master branch of each repo holds the latest code under development. This is typically a SNAPSHOT version.
 For deployment, it is advisable to build a release version. Each release have a corresponding release branch. To build the source code, select the release branch of the latest release version before building the source code.
 
-Each one of the projects are built by executing the following command from the project folder containing the pom.xml file:
-
-> mvn clean install
 
 ### 1.2 Building a docker image
 
 Three sample Dockerfile files are provided:
 
-| Dockerfile         | Description                                                                                                                            |
-|--------------------|----------------------------------------------------------------------------------------------------------------------------------------|
-| Dockerfile         | Builds a docker image that exposes all relevant default ports                                                                          |
-| Dockerfile-debug   | Builds a docker image that allows attachment of a remote debugger on port 8000                                                         |
-| Dockerfile-softhsm | Builds a docker image that includes a SoftHSM and tools to load keys into the SoftHSM. This image is used to test the HSM PKCS#11 API. |
+| Dockerfile         | Description                                                                                |
+|--------------------|--------------------------------------------------------------------------------------------|
+| Dockerfile         | Builds a docker image that exposes all relevant default ports                              |
+| Dockerfile-debug   | Builds a docker image that allows attachment of a remote debugger on application port 8000 |
 
-A docker image can be built using the following command:
-
-> docker build -f Dockerfile -t ca-admin .
 
 Please refer to the Docker manual for instructions on how to build and/or modify these docker images.
 
