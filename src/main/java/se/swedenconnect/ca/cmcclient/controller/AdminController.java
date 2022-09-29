@@ -237,7 +237,7 @@ public class AdminController {
 
   @RequestMapping("/revoke")
   public String revokeCertificate(HttpServletRequest servletRequest, @RequestParam("instance") String instance, Model model,
-    Authentication authentication,
+    Authentication authentication, @RequestParam("reason") int reason,
     @RequestParam("serialNumber") String serialNumberHex, @RequestParam("revokeKey") String revokeKey)
     throws CMCException {
 
@@ -289,7 +289,7 @@ public class AdminController {
         instance, htmlServiceInfo, bootstrapCss, logoMap);
     }
 
-    final CMCResponse cmcResponse = cmcClient.revokeCertificate(certSerial, CRLReason.unspecified, new Date());
+    final CMCResponse cmcResponse = cmcClient.revokeCertificate(certSerial, reason, new Date());
 
     final CMCStatus cmcStatus = cmcResponse.getResponseStatus().getStatus().getCmcStatus();
     if (cmcStatus.equals(CMCStatus.success)) {
@@ -313,6 +313,7 @@ public class AdminController {
       cdd.setExpiryDate(DATE_FORMAT.format(cert.getNotAfter()));
       cdd.setSerialNumber(cert.getSerialNumber());
       cdd.setRevoked(certificateRecord.isRevoked());
+      cdd.setOnHold(certificateRecord.isRevoked() && CRLReason.certificateHold == certificateRecord.getRevocationReason());
       cdd.setExpired(cert.getNotAfter().before(new Date()));
       cdd.setReason(CAServiceUtils.getRevocationReasonString(certificateRecord.getRevocationReason()));
       cdd.setRevocationDate(certificateRecord.isRevoked()

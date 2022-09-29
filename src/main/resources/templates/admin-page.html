@@ -157,17 +157,19 @@
                     <td th:if="${!justValidCerts}" class="ca-service-table-head" style="width: 200px">Revocation time</td>
                     <td class="ca-service-table-head" style="text-align: right;padding-right: 10px;width: 80px">Action</td>
                 </tr>
+                <!--/*@thymesVar id="certList" type="java.util.List<se.swedenconnect.ca.cmcclient.data.CertDisplayData>"*/-->
                 <tr th:each="cert, certStat : ${certList}">
                     <td th:class="${cert.isExpired() ? 'invalid-cert':''}" th:text="${cert.getSerialNumber().toString(16)}" style="font-family: 'Courier New', serif; color: #284a6c"></td>
                     <td th:class="${cert.isExpired() ? 'invalid-cert':''}" th:text="${cert.getSubjectDn()}"></td>
                     <td th:class="${cert.isExpired() ? 'invalid-cert':''}" th:text="${cert.getIssueDate()}"></td>
                     <td th:class="${cert.isExpired() ? 'invalid-hl':''}" th:text="${cert.getExpiryDate()}"></td>
-                    <td th:text="${cert.isExpired() ? 'Expired' : (cert.isRevoked() ? 'Revoked':'Valid')}"></td>
+                    <td th:text="${cert.isExpired() ? 'Expired' : (!cert.isRevoked() ? 'Valid': (cert.isOnHold() ? 'Blocked':'Revoked'))}"></td>
                     <td th:if="${!justValidCerts}" th:text="${cert.getRevocationDate()}"></td>
                     <td style="text-align: right">
                         <i class="fas fa-bars icon-def" th:attr="onclick='displayCert(\''
                     +${cert.getSerialNumber().toString(16)}+'\','
-                    +${cert.isRevoked()}+',\''
+                    +${cert.isRevoked()}+','
+                    +${cert.isOnHold()}+',\''
                     +${instance}+'\');'" title="Manage certificate"></i>
 
 <!--
@@ -192,11 +194,14 @@
                 <div class="col-md-4"><h4>X.509 Certificate</h4></div>
                 <div class="col-md-4" style="text-align: center">
                     <h4 class="cert-revoked-label" id="certificate-revoked-label">Certificate is revoked</h4>
+                    <h4 class="cert-on-hold-label" id="certificate-on-hold-label">Certificate is on hold</h4>
                 </div>
                 <div class="col-md-4" style="text-align: right">
                     <button class="btn btn-sm btn-secondary" onclick="copyToClipboard('overlay-cert-pem-div')" style="margin-right: 10px">Copy to clipboard</button>
                     <button class="btn btn-sm btn-danger" id="cert-revoke-btn" style="margin-right: 10px">Revoke</button>
-                    <button class="btn btn-sm btn-primary" onclick="$('#overlay-data-div').fadeOut(700)">close</button>
+                    <button class="btn btn-sm btn-info" id="cert-on-hold-btn" style="margin-right: 10px">Block</button>
+                    <button class="btn btn-sm btn-info" id="cert-unrevoke-btn" style="margin-right: 10px">Unblock</button>
+                    <button class="btn btn-sm btn-primary" onclick="$('#overlay-data-div').fadeOut(700)">Close</button>
                 </div>
             </div>
         </div>

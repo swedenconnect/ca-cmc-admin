@@ -43,6 +43,7 @@ public class CertDisplayData {
   private String expiryDate;
   private boolean revoked;
   private boolean expired;
+  private boolean onHold;
   private String reason;
   private String revocationDate;
   private BigInteger serialNumber;

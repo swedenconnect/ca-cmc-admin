@@ -1,6 +1,6 @@
 
 ---
-# CURRENT BUILD VERSION = 1.0.2
+# CURRENT BUILD VERSION = 1.0.3
 ---
 # CA admin GUI based on CMC API
 
@@ -18,14 +18,12 @@ Each CA instance has its own administration web page, its own CA repository and 
 ## 1. Building artifacts
 ### 1.1. Building the source code
 
-Building source codes referred to here requires maven version 3.3 or higher.
+Building source codes referred to here requires maven version 3.3 or higher. This project can be built and can run on Java 11 or higher.
+It has been tested with Java 17 JRE
 
-To build the eDelivery CA, a total of 3 projects need to be built in the following order:
+Build with the following command:
 
- 1. https://github.com/swedenconnect/ca-engine (version 1.1.1)
- 2. https://github.com/swedenconnect/ca-cmc (version 1.1.1)
- 3. https://github.com/swedenconnect/sigvaltrust-service/tree/main/commons (version 1.0.2)
- 4. https://github.com/swedenconnect/ca-cmc-admin (This repo) (version 1.0.1)
+> mvn clean install
 
 The master branch of each repo holds the latest code under development. This is typically a SNAPSHOT version.
 For deployment, it is advisable to build a release version. Each release have a corresponding release branch. To build the source code, select the release branch of the latest release version before building the source code.
@@ -354,4 +352,6 @@ After selecting revocation, the administrator will have to re-confirm revocation
 
 ![Revoke confirm](documentation/img/revoke-confirm.png)
 
-
+Certificates may also be blocked temporarily by revoking certificates with on-hold status. A blocked certificate
+can either be unblocked or permanently revoked at a later stage. Options to block or unblock certificates are available on the certificate
+display menu.

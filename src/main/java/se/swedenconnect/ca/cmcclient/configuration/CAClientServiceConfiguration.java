@@ -37,8 +37,6 @@ import se.swedenconnect.ca.cmcclient.http.GenericHttpConnector;
 import se.swedenconnect.ca.cmcclient.utils.CertificateUtils;
 import se.swedenconnect.security.credential.BasicCredential;
 import se.swedenconnect.security.credential.PkiCredential;
-import se.swedenconnect.sigvaltrust.service.commons.EquivalentCertProcessor;
-import se.swedenconnect.sigvaltrust.service.commons.impl.DefaultEquivalentCertProcessor;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -66,10 +64,6 @@ import java.util.stream.Collectors;
 public class CAClientServiceConfiguration {
 
   private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
-  @Bean EquivalentCertProcessor equivalentCertProcessor() {
-    return new DefaultEquivalentCertProcessor();
-  }
 
   @Bean
   public Map<String, CMCClient> cmcClientMap(Map<ServiceCredential, PkiCredential> serviceCredentials,
