@@ -38,7 +38,6 @@ import java.util.Map;
  * @author Martin Lindström (martin@idsec.se)
  * @author Stefan Santesson (stefan@idsec.se)
  */
-@Profile("base")
 @RestController
 public class AjaxProcessCertReqDataController {
 

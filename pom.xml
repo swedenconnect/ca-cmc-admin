@@ -26,7 +26,7 @@
     </parent>
 
     <groupId>se.swedenconnect.ca</groupId>
-    <artifactId>cmc-ca-client-base</artifactId>
+    <artifactId>ca-cmc-admin-client</artifactId>
     <version>1.0.3</version>
 
     <name>CA CMC client base</name>

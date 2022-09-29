@@ -98,8 +98,14 @@ function viewCaChainCert(idx, instance) {
                 $('#overlay-cert-pem-div').html(resultJson.pem);
                 let revokeBtn = $('#cert-revoke-btn');
                 let revokedLabel = $('#certificate-revoked-label');
+                let onHoldLabel = $('#certificate-on-hold-label');
+                let onHoldBtn = $('#cert-on-hold-btn');
+                let unrevokeBtn = $('#cert-unrevoke-btn');
                 revokeBtn.hide();
                 revokedLabel.hide();
+                onHoldBtn.hide();
+                unrevokeBtn.hide();
+                onHoldLabel.hide();
             } else {
                 $('#overlay-display-data-div').html("No data available");
             }
