@@ -1,8 +1,10 @@
+![Logo](documentation/img/sweden-connect.png)
+
+# CA admin GUI based on CMC API
+
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ---
-# CURRENT BUILD VERSION = 1.0.3
----
-# CA admin GUI based on CMC API
 
 ![Certificate request](documentation/img/ca-cmc-admin-ui.png)
 
@@ -50,8 +52,7 @@ The following environment variables are essential to the CA application:
 | Environment variable                | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 |-------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `SPRING_CONFIG_ADDITIONAL_LOCATION` | Specifies the absolute path location of the configuration data folder. This folder must specify a location that is available to the CA application and the CA application must have write access to this folder and all its sub-folders. The absolute path specified by this variable must end with a delimiter ("/") so that `${SPRING_CONFIG_ADDITIONAL_LOCATION}child` specifies the absolute path of the child folder. (Note: this is a rule set by Spring Boot). |
-| `SPRING_PROFILES_ACTIVE`            | Specifies application profiles used by the CA service. This variable must be set to the value "`base`"                                                                                                                                                                                                                                                                                                                                                                |
-| `TZ`                                | Specifies the timezone used by the application. This should be set to "`Europe/Stockholm`"                                                                                                                                                                                                                                                                                                                                                                            |
+| `TZ`                                | Specifies the timezone used by the application. Example "`Europe/Stockholm`"                                                                                                                                                                                                                                                                                                                                                                                          |
 
 The `documentation/sample-config` folder contains sample configuration data. a corresponding folder must be available to the application following the absolut path specified by `SPRING_CONFIG_ADDITIONAL_LOCATION`.
 
@@ -64,9 +65,9 @@ Location of resources such as logotype images, keystore file and trusted certifi
 
 Process logging levels are set according to Spring Boot conventions. Two logging levels are preset:
 
-| Logging level property                         | Description                                              |
-|------------------------------------------------|----------------------------------------------------------|
-| logging.level.se.swedenconnect.ca              | Setting logging level for the CA service.                |
+| Logging level property                         | Description                                          |
+|------------------------------------------------|------------------------------------------------------|
+| logging.level.se.swedenconnect.ca.cmcclient    | Setting logging level for the CA CMC client service. |
 
 Logging levels can be set to the values: `TRACE`, `DEBUG`, `INFO`, `WARN` or `ERROR`
 
@@ -75,8 +76,7 @@ Logging levels can be set to the values: `TRACE`, `DEBUG`, `INFO`, `WARN` or `ER
 Users are added to the system through property settings in the form:
 
 > ca-client.security.user.{user-id}.password={user-password}<br>
-> ca-client.security.user.{user-id}.role[0]={instance-id1}<br>
-> ca-client.security.user.{user-id}.role[1]={instance-id2}<br>
+> ca-client.security.user.{user-id}.role={instance-id1},instance-id2}<br>
 
 or as a coma separated list:
 
