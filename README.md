@@ -341,6 +341,13 @@ Here the administator can choose to copy/paste the new certificate, issue more c
 
 Certificate can be revoked through the admin UI by selecting the target certificate and press the "MANAGE" button and then select the "REVOKE" button. Note that the revoke button is only available if the certificate is not yet revoked.
 
+Two revocation options are available:
+
+| Revocation option | Description                                                                                                                                                                  |
+|-------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Revoke            | Permanently revokes a certificate in a way that can't be undone or changed                                                                                                   |
+| Block             | This option sets a `certificateHold` status on the certificate that causes the certificate be revoked, but allows the certificate to be lifted from revocation (un-blocked). |
+
 After selecting revocation, the administrator will have to re-confirm revocation before revocation is executed:
 
 ![Revoke confirm](documentation/img/revoke-confirm.png)
@@ -348,3 +355,9 @@ After selecting revocation, the administrator will have to re-confirm revocation
 Certificates may also be blocked temporarily by revoking certificates with on-hold status. A blocked certificate
 can either be unblocked or permanently revoked at a later stage. Options to block or unblock certificates are available on the certificate
 display menu.
+
+
+
+-----
+
+Copyright &copy; 2022, [Myndigheten för digital förvaltning - Swedish Agency for Digital Government (DIGG)](http://www.digg.se). Licensed under version 2.0 of the [Apache License](http://www.apache.org/licenses/LICENSE-2.0).
