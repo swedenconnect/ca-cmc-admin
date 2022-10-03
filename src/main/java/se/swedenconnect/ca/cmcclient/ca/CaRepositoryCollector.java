@@ -25,10 +25,10 @@ import org.bouncycastle.asn1.x509.AccessDescription;
 import org.bouncycastle.asn1.x509.Extension;
 import org.bouncycastle.asn1.x509.GeneralName;
 import org.bouncycastle.cert.X509CertificateHolder;
-import se.idsec.x509cert.extensions.SubjectInformationAccess;
 import se.swedenconnect.ca.cmcclient.http.GenericHttpConnector;
 import se.swedenconnect.ca.cmcclient.http.HttpResponse;
 import se.swedenconnect.ca.cmcclient.utils.CertificateUtils;
+import se.swedenconnect.cert.extensions.SubjectInformationAccess;
 
 import java.io.IOException;
 import java.net.URL;

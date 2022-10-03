@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import se.idsec.utils.printcert.PrintCertificate;
+import se.swedenconnect.ca.cmc.CMCException;
 import se.swedenconnect.ca.cmc.api.client.CMCClient;
 import se.swedenconnect.ca.cmc.api.client.CMCResponseExtract;
 import se.swedenconnect.ca.cmc.api.data.CMCResponse;
@@ -105,7 +106,7 @@ public class AdminController {
   public String adminPage(HttpServletRequest servletRequest, @RequestParam("instance") String instance, Model model,
     Authentication authentication, @CookieValue(value = "justValidCerts", required = false) String justValidCertsCookie,
     @CookieValue(value = "pageControlCookie", required = false) String pageCookieVal)
-    throws IOException {
+    throws CMCException {
 
     // Get current user
     CurrentUser currentUser = new CurrentUser(authentication);
@@ -236,9 +237,9 @@ public class AdminController {
 
   @RequestMapping("/revoke")
   public String revokeCertificate(HttpServletRequest servletRequest, @RequestParam("instance") String instance, Model model,
-    Authentication authentication,
+    Authentication authentication, @RequestParam("reason") int reason,
     @RequestParam("serialNumber") String serialNumberHex, @RequestParam("revokeKey") String revokeKey)
-    throws IOException, CertificateException {
+    throws CMCException {
 
     // Get current user
     CurrentUser currentUser = new CurrentUser(authentication);
@@ -288,7 +289,7 @@ public class AdminController {
         instance, htmlServiceInfo, bootstrapCss, logoMap);
     }
 
-    final CMCResponse cmcResponse = cmcClient.revokeCertificate(certSerial, CRLReason.unspecified, new Date());
+    final CMCResponse cmcResponse = cmcClient.revokeCertificate(certSerial, reason, new Date());
 
     final CMCStatus cmcStatus = cmcResponse.getResponseStatus().getStatus().getCmcStatus();
     if (cmcStatus.equals(CMCStatus.success)) {
@@ -312,6 +313,7 @@ public class AdminController {
       cdd.setExpiryDate(DATE_FORMAT.format(cert.getNotAfter()));
       cdd.setSerialNumber(cert.getSerialNumber());
       cdd.setRevoked(certificateRecord.isRevoked());
+      cdd.setOnHold(certificateRecord.isRevoked() && CRLReason.certificateHold == certificateRecord.getRevocationReason());
       cdd.setExpired(cert.getNotAfter().before(new Date()));
       cdd.setReason(CAServiceUtils.getRevocationReasonString(certificateRecord.getRevocationReason()));
       cdd.setRevocationDate(certificateRecord.isRevoked()
@@ -350,16 +352,5 @@ public class AdminController {
       }
     }
   }
-
-/*
-  private String getErrorPage(Model model, String errorMessage, String instance) {
-    model.addAttribute("htmlInfo", htmlServiceInfo);
-    model.addAttribute("bootstrapCss", bootstrapCss);
-    model.addAttribute("logoMap", logoMap);
-    model.addAttribute("errorMessage", errorMessage);
-    model.addAttribute("returnUrl", "admin?instance=" + instance);
-    return "general-error";
-  }
-*/
 
 }

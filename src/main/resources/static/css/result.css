@@ -49,6 +49,11 @@ button.btn-smaller {
     color: #ffffff;
 }
 
+.cert-on-hold-label {
+    background-color: #c69500;
+    color: #ffffff;
+}
+
 td.in-line-table-td {
     border-top: 0px;
     color: #6b9430;

@@ -1,8 +1,10 @@
+![Logo](documentation/img/sweden-connect.png)
+
+# CA admin GUI based on CMC API
+
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ---
-# CURRENT BUILD VERSION = 1.0.2
----
-# CA admin GUI based on CMC API
 
 ![Certificate request](documentation/img/ca-cmc-admin-ui.png)
 
@@ -18,35 +20,26 @@ Each CA instance has its own administration web page, its own CA repository and 
 ## 1. Building artifacts
 ### 1.1. Building the source code
 
-Building source codes referred to here requires maven version 3.3 or higher.
+Building source codes referred to here requires maven version 3.3 or higher. This project can be built and can run on Java 11 or higher.
+It has been tested with Java 17 JRE
 
-To build the eDelivery CA, a total of 3 projects need to be built in the following order:
+Build with the following command:
 
- 1. https://github.com/swedenconnect/ca-engine (version 1.1.1)
- 2. https://github.com/swedenconnect/ca-cmc (version 1.1.1)
- 3. https://github.com/swedenconnect/sigvaltrust-service/tree/main/commons (version 1.0.2)
- 4. https://github.com/swedenconnect/ca-cmc-admin (This repo) (version 1.0.1)
+> mvn clean install
 
 The master branch of each repo holds the latest code under development. This is typically a SNAPSHOT version.
 For deployment, it is advisable to build a release version. Each release have a corresponding release branch. To build the source code, select the release branch of the latest release version before building the source code.
 
-Each one of the projects are built by executing the following command from the project folder containing the pom.xml file:
-
-> mvn clean install
 
 ### 1.2 Building a docker image
 
 Three sample Dockerfile files are provided:
 
-| Dockerfile         | Description                                                                                                                            |
-|--------------------|----------------------------------------------------------------------------------------------------------------------------------------|
-| Dockerfile         | Builds a docker image that exposes all relevant default ports                                                                          |
-| Dockerfile-debug   | Builds a docker image that allows attachment of a remote debugger on port 8000                                                         |
-| Dockerfile-softhsm | Builds a docker image that includes a SoftHSM and tools to load keys into the SoftHSM. This image is used to test the HSM PKCS#11 API. |
+| Dockerfile         | Description                                                                                |
+|--------------------|--------------------------------------------------------------------------------------------|
+| Dockerfile         | Builds a docker image that exposes all relevant default ports                              |
+| Dockerfile-debug   | Builds a docker image that allows attachment of a remote debugger on application port 8000 |
 
-A docker image can be built using the following command:
-
-> docker build -f Dockerfile -t ca-admin .
 
 Please refer to the Docker manual for instructions on how to build and/or modify these docker images.
 
@@ -59,8 +52,7 @@ The following environment variables are essential to the CA application:
 | Environment variable                | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 |-------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `SPRING_CONFIG_ADDITIONAL_LOCATION` | Specifies the absolute path location of the configuration data folder. This folder must specify a location that is available to the CA application and the CA application must have write access to this folder and all its sub-folders. The absolute path specified by this variable must end with a delimiter ("/") so that `${SPRING_CONFIG_ADDITIONAL_LOCATION}child` specifies the absolute path of the child folder. (Note: this is a rule set by Spring Boot). |
-| `SPRING_PROFILES_ACTIVE`            | Specifies application profiles used by the CA service. This variable must be set to the value "`base`"                                                                                                                                                                                                                                                                                                                                                                |
-| `TZ`                                | Specifies the timezone used by the application. This should be set to "`Europe/Stockholm`"                                                                                                                                                                                                                                                                                                                                                                            |
+| `TZ`                                | Specifies the timezone used by the application. Example "`Europe/Stockholm`"                                                                                                                                                                                                                                                                                                                                                                                          |
 
 The `documentation/sample-config` folder contains sample configuration data. a corresponding folder must be available to the application following the absolut path specified by `SPRING_CONFIG_ADDITIONAL_LOCATION`.
 
@@ -73,9 +65,9 @@ Location of resources such as logotype images, keystore file and trusted certifi
 
 Process logging levels are set according to Spring Boot conventions. Two logging levels are preset:
 
-| Logging level property                         | Description                                              |
-|------------------------------------------------|----------------------------------------------------------|
-| logging.level.se.swedenconnect.ca              | Setting logging level for the CA service.                |
+| Logging level property                         | Description                                          |
+|------------------------------------------------|------------------------------------------------------|
+| logging.level.se.swedenconnect.ca.cmcclient    | Setting logging level for the CA CMC client service. |
 
 Logging levels can be set to the values: `TRACE`, `DEBUG`, `INFO`, `WARN` or `ERROR`
 
@@ -84,8 +76,7 @@ Logging levels can be set to the values: `TRACE`, `DEBUG`, `INFO`, `WARN` or `ER
 Users are added to the system through property settings in the form:
 
 > ca-client.security.user.{user-id}.password={user-password}<br>
-> ca-client.security.user.{user-id}.role[0]={instance-id1}<br>
-> ca-client.security.user.{user-id}.role[1]={instance-id2}<br>
+> ca-client.security.user.{user-id}.role={instance-id1},instance-id2}<br>
 
 or as a coma separated list:
 
@@ -350,8 +341,23 @@ Here the administator can choose to copy/paste the new certificate, issue more c
 
 Certificate can be revoked through the admin UI by selecting the target certificate and press the "MANAGE" button and then select the "REVOKE" button. Note that the revoke button is only available if the certificate is not yet revoked.
 
+Two revocation options are available:
+
+| Revocation option | Description                                                                                                                                                                  |
+|-------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Revoke            | Permanently revokes a certificate in a way that can't be undone or changed                                                                                                   |
+| Block             | This option sets a `certificateHold` status on the certificate that causes the certificate be revoked, but allows the certificate to be lifted from revocation (un-blocked). |
+
 After selecting revocation, the administrator will have to re-confirm revocation before revocation is executed:
 
 ![Revoke confirm](documentation/img/revoke-confirm.png)
 
+Certificates may also be blocked temporarily by revoking certificates with on-hold status. A blocked certificate
+can either be unblocked or permanently revoked at a later stage. Options to block or unblock certificates are available on the certificate
+display menu.
 
+
+
+-----
+
+Copyright &copy; 2022, [Myndigheten för digital förvaltning - Swedish Agency for Digital Government (DIGG)](http://www.digg.se). Licensed under version 2.0 of the [Apache License](http://www.apache.org/licenses/LICENSE-2.0).

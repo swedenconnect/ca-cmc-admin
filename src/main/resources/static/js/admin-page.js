@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+let REASON_UNSPECIFIED = 0;
+let REASON_ON_HOLD = 6;
+let REASON_REMOVE_FROM_CRL = 8;
+
 $(document).ready(function(){
     $('#overlay-data-div').hide();
     var windowHeight = window.innerHeight;
@@ -22,7 +26,7 @@ $(document).ready(function(){
     $('#overlay-display-data-div').css("height", viewHeight).css("overflow", "auto");
 });
 
-function displayCert(serialNumber, revoked ,instance) {
+function displayCert(serialNumber, revoked, onhold ,instance) {
     $.ajax({
         url: "getCertData",
         data: {
@@ -34,18 +38,43 @@ function displayCert(serialNumber, revoked ,instance) {
                 let resultJson = JSON.parse(result);
                 $('#overlay-cert-html-div').html(resultJson.certHtml);
                 $('#overlay-cert-pem-div').html(resultJson.pem);
-                let revokeBtn = $('#cert-revoke-btn');
                 let revokedLabel = $('#certificate-revoked-label');
+                let onHoldLabel = $('#certificate-on-hold-label');
+                let revokeBtn = $('#cert-revoke-btn');
+                let onHoldBtn = $('#cert-on-hold-btn')
+                let unrevokeBtn = $('#cert-unrevoke-btn')
                 revokeBtn.click(function (){
-                    revokeCert(serialNumber, instance);
+                    revokeCert(serialNumber, instance, REASON_UNSPECIFIED);
+                });
+                onHoldBtn.click(function (){
+                    revokeCert(serialNumber, instance, REASON_ON_HOLD);
+                });
+                unrevokeBtn.click(function (){
+                    revokeCert(serialNumber, instance, REASON_REMOVE_FROM_CRL);
                 });
                 if (revoked){
-                    revokeBtn.hide();
-                    revokedLabel.show();
+                    if (onhold) {
+                        revokeBtn.show();
+                        unrevokeBtn.show();
+                        onHoldBtn.hide();
+                        onHoldLabel.show();
+                        revokedLabel.hide();
+                    }
+                    else {
+                        revokeBtn.hide();
+                        onHoldBtn.hide();
+                        unrevokeBtn.hide();
+                        revokedLabel.show();
+                        onHoldLabel.hide();
+                    }
                 } else {
                     revokeBtn.show();
+                    onHoldBtn.show();
+                    unrevokeBtn.hide();
+                    onHoldLabel.hide();
                     revokedLabel.hide();
                 }
+
             } else {
                 $('#overlay-display-data-div').html("No data available");
             }
@@ -69,8 +98,14 @@ function viewCaChainCert(idx, instance) {
                 $('#overlay-cert-pem-div').html(resultJson.pem);
                 let revokeBtn = $('#cert-revoke-btn');
                 let revokedLabel = $('#certificate-revoked-label');
+                let onHoldLabel = $('#certificate-on-hold-label');
+                let onHoldBtn = $('#cert-on-hold-btn');
+                let unrevokeBtn = $('#cert-unrevoke-btn');
                 revokeBtn.hide();
                 revokedLabel.hide();
+                onHoldBtn.hide();
+                unrevokeBtn.hide();
+                onHoldLabel.hide();
             } else {
                 $('#overlay-display-data-div').html("No data available");
             }
@@ -79,9 +114,24 @@ function viewCaChainCert(idx, instance) {
     });
 }
 
-function revokeCert(serialNumber, instance) {
-    let revokeTitle = $('<h3>').html("Revoke certificate")
-    let revokeMessage = $('<span>').html("Are you sure you want to revoke this certificate.<br> This action cannot be undone!").addClass("revoke-warning");
+function revokeCert(serialNumber, instance, reason) {
+    let revokeTitle = $('<h3>').html("Revoke certificate");
+    let revokeMessage = $('<span>').html("Are you sure you want to revoke this certificate?<br> This action cannot be undone!").addClass("revoke-warning");
+    let okButtonText = "Revoke";
+    let okButtonClass = "btn-danger";
+    if (reason === REASON_ON_HOLD) {
+        revokeTitle = $('<h3>').html("Block certificate")
+        revokeMessage = $('<span>').html("Are you sure you want to put this certificate on hold?").addClass("revoke-warning");
+        okButtonText = "OK";
+        okButtonClass = "btn-info";
+    }
+    if (reason === REASON_REMOVE_FROM_CRL) {
+        revokeTitle = $('<h3>').html("Unblock certificate")
+        revokeMessage = $('<span>').html("Are you sure you want to unblock this certificate?").addClass("revoke-warning");
+        okButtonText = "OK";
+        okButtonClass = "btn-info";
+    }
+
     bootbox.dialog({
         title: revokeTitle,
         message: revokeMessage,
@@ -89,12 +139,13 @@ function revokeCert(serialNumber, instance) {
         onEscape: true,
         buttons: {
             revoke: {
-                label: "Revoke",
-                className: "btn-danger",
+                label: okButtonText,
+                className: okButtonClass,
                 callback: function (){
                     window.location="revoke?instance=" + instance
-                    + "&serialNumber=" + serialNumber
-                    + "&revokeKey=" + revokeKey;
+                        + "&serialNumber=" + serialNumber
+                        + "&revokeKey=" + revokeKey
+                        + "&reason=" + reason;
                 }
             },
             cancel: {

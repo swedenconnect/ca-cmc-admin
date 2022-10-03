@@ -21,13 +21,13 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.6</version>
+        <version>2.7.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <groupId>se.swedenconnect.ca</groupId>
-    <artifactId>cmc-ca-client-base</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
+    <artifactId>ca-cmc-admin-client</artifactId>
+    <version>1.0.3</version>
 
     <name>CA CMC client base</name>
     <description>CA CMC Client base for administration of CA services</description>
@@ -36,11 +36,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>11</java.version>
-        <credentials-support.version>1.1.0</credentials-support.version>
-        <sigvaltrust-commons.version>1.0.2</sigvaltrust-commons.version>
-        <ca-engine.version>1.2.2-SNAPSHOT</ca-engine.version>
-        <ca-cmc.version>1.3.1-SNAPSHOT</ca-cmc.version>
-        <print-cert.version>1.0.3</print-cert.version>
+        <credentials-support.version>1.2.4</credentials-support.version>
+        <ca-engine.version>1.2.2</ca-engine.version>
+        <ca-cmc.version>1.3.1</ca-cmc.version>
+        <print-cert.version>1.0.4</print-cert.version>
 
     </properties>
 
@@ -111,13 +110,9 @@
             <version>${print-cert.version}</version>
         </dependency>
         <dependency>
-            <groupId>se.swedenconnect.sigvaltrust.service</groupId>
-            <artifactId>commons</artifactId>
-            <version>${sigvaltrust-commons.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>1.18.24</version>
             <optional>true</optional>
         </dependency>
 
@@ -125,7 +120,7 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>bootstrap</artifactId>
-            <version>5.1.3</version>
+            <version>5.2.0</version>
         </dependency>
         <dependency>
             <groupId>org.webjars.npm</groupId>
@@ -135,7 +130,7 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>jquery</artifactId>
-            <version>3.6.0</version>
+            <version>3.6.1</version>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>
@@ -145,7 +140,7 @@
         <dependency>
             <groupId>org.webjars</groupId>
             <artifactId>font-awesome</artifactId>
-            <version>5.15.3</version>
+            <version>6.1.2</version>
         </dependency>
         <dependency>
             <groupId>org.webjars</groupId>

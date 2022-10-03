@@ -62,7 +62,6 @@ import java.util.*;
  */
 @Slf4j
 @Controller
-@Profile("base")
 public class CertIssuanceController {
 
   private final Map<String, CMCClient> cmcClientMap;

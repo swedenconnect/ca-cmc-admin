@@ -35,9 +35,8 @@ import se.swedenconnect.ca.cmcclient.configuration.cmc.CMCProperties;
 import se.swedenconnect.ca.cmcclient.configuration.credentials.ServiceCredential;
 import se.swedenconnect.ca.cmcclient.http.GenericHttpConnector;
 import se.swedenconnect.ca.cmcclient.utils.CertificateUtils;
+import se.swedenconnect.security.credential.BasicCredential;
 import se.swedenconnect.security.credential.PkiCredential;
-import se.swedenconnect.sigvaltrust.service.commons.EquivalentCertProcessor;
-import se.swedenconnect.sigvaltrust.service.commons.impl.DefaultEquivalentCertProcessor;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -66,18 +65,15 @@ public class CAClientServiceConfiguration {
 
   private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-  @Bean EquivalentCertProcessor equivalentCertProcessor(){
-    return new DefaultEquivalentCertProcessor();
-  }
-
   @Bean
   public Map<String, CMCClient> cmcClientMap(Map<ServiceCredential, PkiCredential> serviceCredentials,
     CMCProperties cmcProperties)
-    throws FileNotFoundException, CertificateException, MalformedURLException, NoSuchAlgorithmException, OperatorCreationException,
+    throws FileNotFoundException, CertificateException, MalformedURLException, NoSuchAlgorithmException,
+    OperatorCreationException,
     JsonProcessingException {
     log.info("Setting up CMC clients for CA instances:");
     Map<String, CMCClient> cmcClientMap = new HashMap<>();
-    if (cmcProperties.getInstance() == null || cmcProperties.getInstance().isEmpty()){
+    if (cmcProperties.getInstance() == null || cmcProperties.getInstance().isEmpty()) {
       log.warn("No CA instances found in the CMC client configuration.");
       return cmcClientMap;
     }
@@ -90,16 +86,19 @@ public class CAClientServiceConfiguration {
         new FileInputStream(ResourceUtils.getFile(cmcInstanceParams.getResponseCertificateLocation())));
       X509Certificate caCert = CertificateUtils.decodeCertificate(
         new FileInputStream(ResourceUtils.getFile(cmcInstanceParams.getCaCertificateLocation())));
+      PkiCredential cmcClientCredential = new BasicCredential(
+        serviceCredentials.get(ServiceCredential.cmc).getCertificate(),
+        serviceCredentials.get(ServiceCredential.cmc).getPrivateKey());
       CMCClient cmcClient = new DefaultCMCClient(
         cmcInstanceParams.getRequestUrl(),
-        serviceCredentials.get(ServiceCredential.cmc).getPrivateKey(),
-        serviceCredentials.get(ServiceCredential.cmc).getCertificate(),
+        cmcClientCredential,
         cmcAlgorithm,
         responseCert, caCert
       );
       cmcClientMap.put(instanceId, cmcClient);
-      if (log.isDebugEnabled()){
-        log.debug("CMC instance configuration: {}", OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(cmcInstanceParams));
+      if (log.isDebugEnabled()) {
+        log.debug("CMC instance configuration: {}",
+          OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValueAsString(cmcInstanceParams));
       }
     }
     return cmcClientMap;
@@ -115,8 +114,8 @@ public class CAClientServiceConfiguration {
   @Bean
   Map<String, EmbeddedLogo> logoMap(
     ResourceLoader resourceLoader,
-    @Value("${ca-client.config.logo}")String logoLocation,
-    @Value("${ca-client.config.icon}")String iconLocation
+    @Value("${ca-client.config.logo}") String logoLocation,
+    @Value("${ca-client.config.icon}") String iconLocation
   ) throws Exception {
     log.info("Service logo obtained from: {}", logoLocation);
     log.info("Icon logo obtained from {}", iconLocation);
@@ -126,13 +125,13 @@ public class CAClientServiceConfiguration {
     return logoMap;
   }
 
-  @Bean (name = "BasicServiceConfig")
+  @Bean(name = "BasicServiceConfig")
   BasicServiceConfig basicServiceConfig(
     @Value("${ca-client.config.data-directory}") String configLocation,
     @Value("${ca-client.config.base-url}") String serviceBaseUrl,
     @Value("${server.servlet.context-path:#{null}}") String serviceContextPath
   ) {
-    Security.insertProviderAt(new BouncyCastleProvider(),1);
+    Security.insertProviderAt(new BouncyCastleProvider(), 1);
     log.info("Available crypto providers: {}", String.join(",", Arrays.stream(Security.getProviders())
       .map(Provider::getName)
       .collect(Collectors.toList())));
