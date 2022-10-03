@@ -1,6 +1,6 @@
 # CA CMC Admin versions
 
-**Latest current version 1.0.2**
+**Latest current version 1.0.3**
 
 | Version | Comment                                                                                             | Date       |
 |---------|-----------------------------------------------------------------------------------------------------|------------|
