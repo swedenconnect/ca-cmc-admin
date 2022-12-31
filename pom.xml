@@ -27,7 +27,7 @@
 
     <groupId>se.swedenconnect.ca</groupId>
     <artifactId>ca-cmc-admin-client</artifactId>
-    <version>1.0.3</version>
+    <version>1.0.4-SNAPSHOT</version>
 
     <name>CA CMC client base</name>
     <description>CA CMC Client base for administration of CA services</description>
@@ -37,8 +37,8 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>11</java.version>
         <credentials-support.version>1.2.4</credentials-support.version>
-        <ca-engine.version>1.2.2</ca-engine.version>
-        <ca-cmc.version>1.3.1</ca-cmc.version>
+        <ca-engine.version>1.3.0-SNAPSHOT</ca-engine.version>
+        <ca-cmc.version>1.3.2-SNAPSHOT</ca-cmc.version>
         <print-cert.version>1.0.4</print-cert.version>
 
     </properties>
