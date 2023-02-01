@@ -162,13 +162,4 @@ public class CAClientServiceConfiguration {
     return basicServiceConfig;
   }
 
-/*
-  @Bean CRLCache crlCache(BasicServiceConfig basicServiceConfig) {
-    File crlCacheFile = new File(basicServiceConfig.getDataStoreLocation(), "crl-cache");
-    if (!crlCacheFile.exists()){
-      crlCacheFile.mkdirs();
-    }
-    return new CRLCacheImpl(crlCacheFile, 100);
-  }
-*/
 }

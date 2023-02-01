@@ -1,6 +1,6 @@
 FROM openjdk:17-jdk-slim
 
-ADD target/ca-cmc-admin-client-1.0.6-SNAPSHOT.jar /app.jar
+ADD target/ca-cmc-admin-client-1.0.6 /app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]
 
 # Main web port
