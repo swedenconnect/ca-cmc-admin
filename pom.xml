@@ -11,7 +11,7 @@
 
     <groupId>se.swedenconnect.ca</groupId>
     <artifactId>ca-cmc-admin-client</artifactId>
-    <version>1.0.6</version>
+    <version>1.0.7-SNAPSHOT</version>
 
     <name>CA CMC client base</name>
     <description>CA CMC Client base for administration of CA services</description>
