@@ -33,8 +33,8 @@ import se.swedenconnect.ca.cmcclient.configuration.EmbeddedLogo;
 import se.swedenconnect.ca.cmcclient.configuration.HtmlServiceInfo;
 import se.swedenconnect.ca.cmcclient.configuration.cmc.CMCProperties;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.cert.CertificateException;

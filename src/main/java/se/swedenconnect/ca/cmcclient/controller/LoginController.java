@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import se.swedenconnect.ca.cmcclient.configuration.EmbeddedLogo;
 import se.swedenconnect.ca.cmcclient.configuration.HtmlServiceInfo;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 import java.util.Map;
 
 /**

@@ -16,8 +16,9 @@
 
 package se.swedenconnect.ca.cmcclient.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.cmc.CMCStatus;
@@ -56,12 +57,8 @@ import se.swedenconnect.ca.cmcclient.utils.CertificateUtils;
 import se.swedenconnect.ca.engine.ca.attribute.CertAttributes;
 import se.swedenconnect.ca.engine.ca.repository.SortBy;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.text.SimpleDateFormat;
 import java.util.*;

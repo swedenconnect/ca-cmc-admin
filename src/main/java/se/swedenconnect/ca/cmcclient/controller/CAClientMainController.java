@@ -16,6 +16,7 @@
 
 package se.swedenconnect.ca.cmcclient.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,7 +30,6 @@ import se.swedenconnect.ca.cmcclient.configuration.HtmlServiceInfo;
 import se.swedenconnect.ca.cmcclient.configuration.cmc.CMCInstanceParams;
 import se.swedenconnect.ca.cmcclient.configuration.cmc.CMCProperties;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**

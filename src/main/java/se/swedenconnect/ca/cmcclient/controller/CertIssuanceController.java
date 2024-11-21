@@ -16,6 +16,8 @@
 
 package se.swedenconnect.ca.cmcclient.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
@@ -49,8 +51,6 @@ import se.swedenconnect.ca.cmcclient.configuration.cmc.CMCProperties;
 import se.swedenconnect.ca.cmcclient.configuration.profile.CertificateProfileProperties;
 import se.swedenconnect.ca.engine.ca.models.cert.CertNameModel;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.security.cert.X509Certificate;
 import java.util.*;
 
