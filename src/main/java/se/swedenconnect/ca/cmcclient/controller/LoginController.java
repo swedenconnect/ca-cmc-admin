@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2023.  Agency for Digital Government (DIGG)
+ * Copyright 2024.  Agency for Digital Government (DIGG)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import se.swedenconnect.ca.cmcclient.configuration.EmbeddedLogo;
 import se.swedenconnect.ca.cmcclient.configuration.HtmlServiceInfo;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 import java.util.Map;
 
 /**

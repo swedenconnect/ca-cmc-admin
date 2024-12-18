@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2023.  Agency for Digital Government (DIGG)
+ * Copyright 2024.  Agency for Digital Government (DIGG)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package se.swedenconnect.ca.cmcclient.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
@@ -25,7 +26,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import se.swedenconnect.ca.cmcclient.configuration.EmbeddedLogo;
 import se.swedenconnect.ca.cmcclient.configuration.HtmlServiceInfo;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2023.  Agency for Digital Government (DIGG)
+ * Copyright 2024.  Agency for Digital Government (DIGG)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 
 package se.swedenconnect.ca.cmcclient.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +33,9 @@ import se.swedenconnect.ca.cmc.api.data.CMCResponse;
 import se.swedenconnect.ca.cmc.model.admin.response.CAInformation;
 import se.swedenconnect.ca.cmcclient.authz.CurrentUser;
 import se.swedenconnect.ca.cmcclient.ca.PublicKeyValidator;
-import se.swedenconnect.ca.cmcclient.ca.request.RequestData;
-import se.swedenconnect.ca.cmcclient.ca.request.RequestDataResult;
 import se.swedenconnect.ca.cmcclient.data.CertContentDisplayData;
 import se.swedenconnect.ca.cmcclient.utils.CAServiceUtils;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.cert.CertificateException;

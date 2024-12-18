@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2023.  Agency for Digital Government (DIGG)
+ * Copyright 2024.  Agency for Digital Government (DIGG)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,8 +33,8 @@ import se.swedenconnect.ca.cmcclient.configuration.EmbeddedLogo;
 import se.swedenconnect.ca.cmcclient.configuration.HtmlServiceInfo;
 import se.swedenconnect.ca.cmcclient.configuration.cmc.CMCProperties;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.cert.CertificateException;
