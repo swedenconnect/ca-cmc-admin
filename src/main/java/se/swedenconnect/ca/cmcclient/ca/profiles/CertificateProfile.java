@@ -68,7 +68,7 @@ public interface CertificateProfile {
    * Get request parameters for Extended Key Usage (EKU) identifiers that should be provided to the certificate request page
    * @return list of EKU request parameters
    */
-  List<EKUReqParameter> getEKURequestParameters();
+  List<ExtendedKeyUsage> getEKURequestParameters();
 
   /**
    * List of other request parameters that should be provided in the context of the request process

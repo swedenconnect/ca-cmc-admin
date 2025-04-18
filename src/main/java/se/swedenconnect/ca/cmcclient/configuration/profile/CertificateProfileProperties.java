@@ -49,7 +49,7 @@ public class CertificateProfileProperties {
   public static class Profile {
     private List<AttrReqParameter> requestAttributes;
     private List<SubjectAlltNameReqParameter> requestSubjAltNames;
-    private List<EKUReqParameter> requestEku;
+    private List<String> requestEku;
     private List<OtherReqParameters> requestOther;
     private Map<String, String> requestFixedValue;
 
@@ -60,7 +60,7 @@ public class CertificateProfileProperties {
     private List<String> policy;
     private Boolean anyPolicy;
     private Boolean policyCritical;
-    private List<EKUReqParameter> eku;
+    private List<String> eku;
     private Boolean ekuCritical;
     private Boolean ca;
     private Boolean bcCritical;

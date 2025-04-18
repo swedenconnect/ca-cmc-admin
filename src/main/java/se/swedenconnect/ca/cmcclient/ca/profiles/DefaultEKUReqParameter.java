@@ -34,7 +34,7 @@ import org.bouncycastle.asn1.x509.KeyPurposeId;
  */
 @AllArgsConstructor
 @Getter
-public enum EKUReqParameter {
+public enum DefaultEKUReqParameter {
 
   ekuServerAuth(KeyPurposeId.id_kp_serverAuth, "TLS Server authentication"),
   ekuClientAuth(KeyPurposeId.id_kp_clientAuth, "TLS Client authentication"),

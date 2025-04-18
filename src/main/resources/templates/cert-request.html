@@ -112,8 +112,8 @@
                                 </div>
                                 <hr>
                                 <div th:each="ekuType:${certificateProfile.getEKURequestParameters()}" class="form-check">
-                                    <input type="checkbox" class="form-check-input" th:name="${ekuType.name()}" th:id="${ekuType.name()} + 'Input'" onclick="ekuSettings(false)">
-                                    <label class="form-check-label" th:for="${ekuType.name()} + 'Input'" th:text="${ekuType.getInputLabel()}"></label>
+                                    <input type="checkbox" class="form-check-input" th:name="${ekuType.getTag()}" th:id="${ekuType.getTag()} + 'Input'" onclick="ekuSettings(false)">
+                                    <label class="form-check-label" th:for="${ekuType.getTag()} + 'Input'" th:text="${ekuType.getDescription()}"></label>
                                 </div>
                             </div>
                         </th:block>

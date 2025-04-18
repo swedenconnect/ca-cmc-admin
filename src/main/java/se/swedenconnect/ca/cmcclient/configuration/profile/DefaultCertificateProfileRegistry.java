@@ -24,6 +24,7 @@ import org.springframework.stereotype.Component;
 import se.swedenconnect.ca.cmcclient.ca.profiles.CertificateProfile;
 import se.swedenconnect.ca.cmcclient.ca.profiles.CertificateProfileRegistry;
 import se.swedenconnect.ca.cmcclient.ca.profiles.impl.PropertyBasedCertificateProfile;
+import se.swedenconnect.ca.cmcclient.configuration.cmc.CMCProperties;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,15 +42,17 @@ import java.util.Set;
 public class DefaultCertificateProfileRegistry implements CertificateProfileRegistry {
 
   private final Map<String, CertificateProfile> certificateProfileMap;
+  private final CMCProperties cmcProperties;
 
   @Autowired
-  public DefaultCertificateProfileRegistry(Map<String, CertificateProfileProperties.Profile> propertyProfileDataMap)
+  public DefaultCertificateProfileRegistry(Map<String, CertificateProfileProperties.Profile> propertyProfileDataMap, CMCProperties cmcProperties)
     throws JsonProcessingException {
     certificateProfileMap = new HashMap<>();
+    this.cmcProperties = cmcProperties;
     registerCertificateProfile("null", null);
     final Set<String> propProfileNames = propertyProfileDataMap.keySet();
     for (String propProfileName : propProfileNames){
-      registerCertificateProfile(propProfileName, new PropertyBasedCertificateProfile(propertyProfileDataMap.get(propProfileName),"cert-request"));
+      registerCertificateProfile(propProfileName, new PropertyBasedCertificateProfile(propertyProfileDataMap.get(propProfileName),"cert-request", cmcProperties));
       log.info("Registered certificate profile: {}", propProfileName);
       if (log.isDebugEnabled()){
         ObjectMapper objectMapper = new ObjectMapper();

@@ -11,7 +11,7 @@
 
     <groupId>se.swedenconnect.ca</groupId>
     <artifactId>ca-cmc-admin-client</artifactId>
-    <version>1.1.1</version>
+    <version>1.2.0</version>
 
     <name>CA CMC client base</name>
     <description>CA CMC Client base for administration of CA services</description>
@@ -32,11 +32,6 @@
             <id>central</id>
             <name>maven2</name>
             <url>https://repo1.maven.org/maven2/</url>
-        </repository>
-        <repository>
-            <id>idsec</id>
-            <name>libs-release</name>
-            <url>https://maven.eidastest.se/artifactory/libs-release</url>
         </repository>
     </repositories>
 
