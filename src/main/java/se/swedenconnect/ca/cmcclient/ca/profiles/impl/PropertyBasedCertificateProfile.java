@@ -16,11 +16,13 @@
 
 package se.swedenconnect.ca.cmcclient.ca.profiles.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.asn1.ASN1ObjectIdentifier;
 import org.bouncycastle.asn1.x509.KeyPurposeId;
 import org.bouncycastle.asn1.x509.KeyUsage;
 import se.swedenconnect.ca.cmc.api.CMCCertificateModelBuilder;
 import se.swedenconnect.ca.cmcclient.ca.profiles.*;
+import se.swedenconnect.ca.cmcclient.configuration.cmc.CMCProperties;
 import se.swedenconnect.ca.cmcclient.configuration.profile.CertificateProfileProperties;
 import se.swedenconnect.ca.engine.ca.models.cert.extension.impl.CertificatePolicyModel;
 import se.swedenconnect.ca.engine.ca.models.cert.extension.impl.simple.BasicConstraintsModel;
@@ -29,6 +31,8 @@ import se.swedenconnect.ca.engine.ca.models.cert.extension.impl.simple.KeyUsageM
 
 import java.security.PublicKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -38,22 +42,67 @@ import java.util.Map;
  * @author Martin Lindström (martin@idsec.se)
  * @author Stefan Santesson (stefan@idsec.se)
  */
+@Slf4j
 public class PropertyBasedCertificateProfile extends AbstractCertificateProfile {
   CertificateProfileProperties.Profile profilePropertiesData;
+  private final CMCProperties cmcProperties;
 
-  public PropertyBasedCertificateProfile(CertificateProfileProperties.Profile profilePropertiesData, String templatePage) {
+  public PropertyBasedCertificateProfile(CertificateProfileProperties.Profile profilePropertiesData, String templatePage,
+      CMCProperties cmcProperties) {
     super(
       templatePage,
       profilePropertiesData.getRequestAttributes(),
       profilePropertiesData.getRequestSubjAltNames(),
-      profilePropertiesData.getRequestEku(),
+      getExtendedKeyUsage(profilePropertiesData.getRequestEku(), cmcProperties),
       profilePropertiesData.getRequestOther(),
       profilePropertiesData.getRequestFixedValue()
     );
     this.profilePropertiesData = profilePropertiesData;
+    this.cmcProperties = cmcProperties;
     setCriticalAltNameExt(profilePropertiesData.getSubjAltNameCritical());
     setCriticalEKUExt(profilePropertiesData.getEkuCritical());
     setCriticalCertificatePolicyExt(profilePropertiesData.getPolicyCritical());
+  }
+
+  private static List<ExtendedKeyUsage> getExtendedKeyUsage(final List<String> requestEku, final CMCProperties cmcProperties) {
+    List<ExtendedKeyUsage> extendedKeyUsages = new ArrayList<>();
+    if (requestEku == null || requestEku.isEmpty()) {
+      return extendedKeyUsages;
+    }
+    final List<CMCProperties.ExtendedKeyUsageProperty> customEkuList = cmcProperties.getCustomEku();
+    for (String ekuName: requestEku) {
+      ExtendedKeyUsage extendedKeyUsage = Arrays.stream(DefaultEKUReqParameter.values())
+          .filter(defaultEKUReqParameter -> defaultEKUReqParameter.name().equalsIgnoreCase(ekuName))
+          .map(defaultEKUReqParameter -> new ExtendedKeyUsage(
+              defaultEKUReqParameter.getEku(),
+              defaultEKUReqParameter.name(),
+              defaultEKUReqParameter.getInputLabel()))
+          .findFirst()
+          .orElse(null);
+      if (extendedKeyUsage != null) {
+        extendedKeyUsages.add(extendedKeyUsage);
+        continue;
+      }
+      if (customEkuList == null || customEkuList.isEmpty()) {
+        throw new IllegalArgumentException("Configured eku tag " + ekuName + " is not defined - Define it as custom EKU in application.properties");
+      }
+      extendedKeyUsage = customEkuList.stream()
+          .filter(extendedKeyUsageProperty -> extendedKeyUsageProperty.getTag().equals(ekuName))
+          .map(extendedKeyUsageProperty -> new ExtendedKeyUsage(
+              KeyPurposeId.getInstance(new ASN1ObjectIdentifier(extendedKeyUsageProperty.getOid())),
+              extendedKeyUsageProperty.getTag(),
+              extendedKeyUsageProperty.getDescription()))
+          .findFirst()
+          .orElseThrow(() -> new IllegalArgumentException("Configured eku tag " + ekuName + " is not defined - Define it as custom EKU in application.properties"));
+      if (extendedKeyUsage.getTag() == null || !extendedKeyUsage.getTag().startsWith("eku")) {
+        throw new IllegalArgumentException("Custom eku tag " + ekuName + " has illegal tag. The tag MUST start with 'eku' - Rename custom EKU tag in application.properties");
+      }
+      if (extendedKeyUsage.getDescription() == null || extendedKeyUsage.getDescription().isEmpty()) {
+        throw new IllegalArgumentException("Custom eku tag " + ekuName + " has no description");
+      }
+      extendedKeyUsages.add(extendedKeyUsage);
+    }
+    return extendedKeyUsages;
   }
 
   @Override protected void doProfileUpdates(CMCCertificateModelBuilder certificateModelBuilder, PublicKey publicKey,
@@ -104,8 +153,8 @@ public class PropertyBasedCertificateProfile extends AbstractCertificateProfile 
     if (profilePropertiesData.getEku() != null && !profilePropertiesData.getEku().isEmpty()){
       certificateModelBuilder.extendedKeyUsage(new ExtendedKeyUsageModel(
         profilePropertiesData.getEkuCritical(),
-        profilePropertiesData.getEku().stream()
-          .map(EKUReqParameter::getEku)
+        getExtendedKeyUsage(profilePropertiesData.getEku(), cmcProperties).stream()
+          .map(ExtendedKeyUsage::getEku)
           .toArray(KeyPurposeId[]::new)
       ));
     }

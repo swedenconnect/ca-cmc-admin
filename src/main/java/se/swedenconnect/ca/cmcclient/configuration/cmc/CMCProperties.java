@@ -16,10 +16,13 @@
 
 package se.swedenconnect.ca.cmcclient.configuration.cmc;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,5 +38,15 @@ public class CMCProperties {
 
   String algorithm;
   Map<String, CMCInstanceParams> instance;
+  List<ExtendedKeyUsageProperty> customEku;
 
+
+  @Data
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public static class ExtendedKeyUsageProperty {
+    String tag;
+    String oid;
+    String description;
+  }
 }

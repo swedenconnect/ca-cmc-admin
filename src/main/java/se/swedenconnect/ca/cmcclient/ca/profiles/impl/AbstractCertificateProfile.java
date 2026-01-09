@@ -49,7 +49,7 @@ public abstract class AbstractCertificateProfile implements CertificateProfile {
 
   @Setter private List<AttrReqParameter> attrReqParameters;
   @Setter private List<SubjectAlltNameReqParameter> subjectAlltNameReqParameters;
-  @Setter private List<EKUReqParameter> ekuReqParameters;
+  @Setter private List<ExtendedKeyUsage> ekuReqParameters;
   @Setter private List<OtherReqParameters> otherReqParameters;
   @Setter private Map<String, String> fixedValueMap;
 
@@ -59,7 +59,7 @@ public abstract class AbstractCertificateProfile implements CertificateProfile {
 
   public AbstractCertificateProfile(String templatePage, List<AttrReqParameter> attrReqParameters,
     List<SubjectAlltNameReqParameter> subjectAlltNameReqParameters,
-    List<EKUReqParameter> ekuReqParameters, List<OtherReqParameters> otherReqParameters, Map<String, String> fixedValueMap) {
+    List<ExtendedKeyUsage> ekuReqParameters, List<OtherReqParameters> otherReqParameters, Map<String, String> fixedValueMap) {
     this.templatePage = templatePage;
     this.attrReqParameters = attrReqParameters;
     this.subjectAlltNameReqParameters = subjectAlltNameReqParameters;
@@ -118,8 +118,8 @@ public abstract class AbstractCertificateProfile implements CertificateProfile {
 
     // Include EKUs
     List<KeyPurposeId> ekuList = new ArrayList<>();
-    for (EKUReqParameter ekuReqParameter : EKUReqParameter.values()) {
-      if (requestParameters.containsKey(ekuReqParameter.name())) {
+    for (ExtendedKeyUsage ekuReqParameter : ekuReqParameters) {
+      if (requestParameters.containsKey(ekuReqParameter.getTag())) {
         ekuList.add(ekuReqParameter.getEku());
       }
     }
@@ -211,7 +211,7 @@ public abstract class AbstractCertificateProfile implements CertificateProfile {
    *
    * @return list of EKU request parameters
    */
-  @Override public List<EKUReqParameter> getEKURequestParameters() {
+  @Override public List<ExtendedKeyUsage> getEKURequestParameters() {
     return ekuReqParameters == null ? new ArrayList<>() : ekuReqParameters;
   }
 
