@@ -14,29 +14,28 @@
  * limitations under the License.
  */
 
-var pageCookie = "pageControlCookie"
-
-var pageData;
+const pageCookie = "pageControlCookie"
+let pageData;
 
 $(document).ready(function(){
 
-    let pageCookieData = $.cookie(pageCookie);
-    if (pageCookieData === undefined){
+    let pageDataJson = getCookie(pageCookie);
+    if (pageDataJson === undefined){
         let pageSize = $("#pageSizeSelect").find('option:selected').val();
         let sortBy = $("#sortBySelect").find('option:selected').val();
-        pageCookieData = JSON.stringify({
+        pageDataJson = JSON.stringify({
             size: pageSize,
             sort: sortBy,
             page: 0,
             descending: false
         });
-        $.cookie(pageCookie, pageCookieData, {path: '/', expires: 200})
+        setCookie(pageCookie, pageDataJson, 200);
     }
-    pageData = JSON.parse($.cookie(pageCookie));
+    pageData = JSON.parse(pageDataJson);
 });
 
 function savePageCookieAndReload() {
-    $.cookie(pageCookie, JSON.stringify(pageData), {path: '/', expires: 200})
+    setCookie(pageCookie, JSON.stringify(pageData), 200);
     window.location="admin?instance=" + encodeURIComponent(instance);
 }
 
