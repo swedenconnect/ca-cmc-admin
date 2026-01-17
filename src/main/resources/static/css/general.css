@@ -59,6 +59,18 @@ article .info-box p:last-child {
     cursor: pointer;
 }
 
+.icon-inv {
+    color: #712b29;
+    font-size: x-large;
+    cursor: pointer;
+}
+
+.icon-inv:hover {
+    color: #325d88;
+    font-size: x-large;
+    cursor: pointer;
+}
+
 .icon-large {
     color: #325d88;
     font-size: xx-large;

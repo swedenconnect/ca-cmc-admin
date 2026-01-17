@@ -159,11 +159,11 @@ function revokeCert(serialNumber, instance, reason) {
 
 function setJustValidCerts(instance) {
     let justValidCerts = $("#justValidCertsInput").prop("checked");
-    $.cookie("justValidCerts", justValidCerts, {expires: 200})
-    window.location="admin?instance=" + instance
+    setCookie("justValidCerts", justValidCerts, 200);
+    window.location="admin?instance=" + instance;
 }
 
 function setJustValidCerts2(value) {
-    $.cookie("justValidCerts", value, {expires: 200})
-    window.location="admin?instance=" + instance
+    setCookie("justValidCerts", value, 200);
+    window.location="admin?instance=" + instance;
 }

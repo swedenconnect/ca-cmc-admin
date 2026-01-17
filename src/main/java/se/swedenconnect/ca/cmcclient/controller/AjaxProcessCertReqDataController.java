@@ -16,8 +16,6 @@
 
 package se.swedenconnect.ca.cmcclient.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,6 +24,8 @@ import se.swedenconnect.ca.cmcclient.ca.PublicKeyValidator;
 import se.swedenconnect.ca.cmcclient.ca.profiles.CertificateProfileRegistry;
 import se.swedenconnect.ca.cmcclient.ca.request.RequestData;
 import se.swedenconnect.ca.cmcclient.ca.request.RequestDataResult;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,7 +51,7 @@ public class AjaxProcessCertReqDataController {
 
   @RequestMapping("/processCertReqData")
   public String processCertReqData(@RequestParam("certRequestInputText") String certRequestInputText, @RequestParam(name = "profile", required = false) String profile) throws
-    JsonProcessingException {
+      JacksonException {
 
     Map<String, String> fixedValueMap = profile != null && certificateProfileRegistry.getCertificateProfileMap().containsKey(profile)
       ? certificateProfileRegistry.getCertificateProfileMap().get(profile).getFixedValueMap()

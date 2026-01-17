@@ -54,6 +54,7 @@
             <span style="float: right">
                 <a th:if="${certificateProfile != null}" class="btn btn-sm btn-secondary" th:href="'request?instance=' + ${instance}">Issue Certificate</a> &nbsp;&nbsp;&nbsp;
                 <a class="btn btn-sm btn-primary" href="main">Home</a>
+                <a class="btn btn-sm btn-light" th:href="'admin?instance=' + ${instance}"><i class="fa fa-refresh" title="Refresh page"></i></a>
             </span>
             <h4>Certificate issuer</h4>
             <table class="table table-sm" style="margin-top: 20px">
@@ -120,10 +121,9 @@
                     <span class="cert-count" th:text="${justValidCerts ? nonRevokedCount : certCount}"></span>&nbsp;&nbsp;
                 </div>
                 <div class="col-xl-2" style="text-align: right">
-                    <i th:if="${!justValidCerts}" class="far fa-eye icon-def" onclick="setJustValidCerts2(true)" title="Click to hide revoked"></i>
-                    <i th:if="${justValidCerts}" class="far fa-eye-slash icon-def" th:onclick="setJustValidCerts2(false)" title="Click to show revoked"></i>
+                    <i th:if="${!justValidCerts}" class="fa-regular fa-rectangle-xmark icon-inv" onclick="setJustValidCerts2(true)" title="Click to hide revoked"></i>
+                    <i th:if="${justValidCerts}" class="fa-solid fa-circle-check icon-def" th:onclick="setJustValidCerts2(false)" title="Click to show revoked"></i>
                     &nbsp;
-                    <i class="far fa-window-close" style="color: #921e12;font-size: x-large"></i>
 
 <!--
                     <input type="checkbox" class="form-check-input" id="justValidCertsInput" th:attr="onchange='setJustValidCerts(\'' + ${instance} + '\')'" th:checked="${justValidCerts}">
