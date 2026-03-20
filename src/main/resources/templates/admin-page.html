@@ -7,17 +7,17 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
     <script src="webjars/jquery/3.7.1/jquery.min.js"></script>
-    <script src="webjars/bootstrap/5.3.3/js/bootstrap.min.js"></script>
+    <script src="webjars/bootstrap/5.3.8/js/bootstrap.min.js"></script>
     <script src="webjars/bootbox/5.5.2/bootbox.js"></script>
     <script src="webjars/bootbox/5.5.2/bootbox.locales.js"></script>
-    <script src="webjars/popper.js/1.16.1-lts/dist/umd/popper.min.js"></script>
-    <script src="webjars/jquery-cookie/1.4.1-1/jquery.cookie.js"></script>
+    <script src="webjars/popper.js/1.16.1/dist/umd/popper.min.js"></script>
+    <script src="js/cookie-utils.js"></script>
     <script src="js/admin-page.js"></script>
     <script src="js/ca-common.js"></script>
     <script src="js/page-list.js"></script>
 
     <link rel="stylesheet" th:href="${bootstrapCss}"/>
-    <link rel="stylesheet" href="webjars/font-awesome/6.5.2/css/all.min.css"/>
+    <link rel="stylesheet" href="webjars/font-awesome/7.1.0/css/all.min.css"/>
     <link rel="stylesheet" href="css/result.css"/>
     <link rel="stylesheet" href="css/certDisp.css">
     <link rel="stylesheet" href="css/general.css">
@@ -54,6 +54,7 @@
             <span style="float: right">
                 <a th:if="${certificateProfile != null}" class="btn btn-sm btn-secondary" th:href="'request?instance=' + ${instance}">Issue Certificate</a> &nbsp;&nbsp;&nbsp;
                 <a class="btn btn-sm btn-primary" href="main">Home</a>
+                <a class="btn btn-sm btn-light" th:href="'admin?instance=' + ${instance}"><i class="fa fa-refresh" title="Refresh page"></i></a>
             </span>
             <h4>Certificate issuer</h4>
             <table class="table table-sm" style="margin-top: 20px">
@@ -120,10 +121,9 @@
                     <span class="cert-count" th:text="${justValidCerts ? nonRevokedCount : certCount}"></span>&nbsp;&nbsp;
                 </div>
                 <div class="col-xl-2" style="text-align: right">
-                    <i th:if="${!justValidCerts}" class="far fa-eye icon-def" onclick="setJustValidCerts2(true)" title="Click to hide revoked"></i>
-                    <i th:if="${justValidCerts}" class="far fa-eye-slash icon-def" th:onclick="setJustValidCerts2(false)" title="Click to show revoked"></i>
+                    <i th:if="${!justValidCerts}" class="fa-regular fa-rectangle-xmark icon-inv" onclick="setJustValidCerts2(true)" title="Click to hide revoked"></i>
+                    <i th:if="${justValidCerts}" class="fa-solid fa-circle-check icon-def" th:onclick="setJustValidCerts2(false)" title="Click to show revoked"></i>
                     &nbsp;
-                    <i class="far fa-window-close" style="color: #921e12;font-size: x-large"></i>
 
 <!--
                     <input type="checkbox" class="form-check-input" id="justValidCertsInput" th:attr="onchange='setJustValidCerts(\'' + ${instance} + '\')'" th:checked="${justValidCerts}">

@@ -16,8 +16,6 @@
 
 package se.swedenconnect.ca.cmcclient.configuration;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -37,6 +35,8 @@ import se.swedenconnect.ca.cmcclient.http.GenericHttpConnector;
 import se.swedenconnect.ca.cmcclient.utils.CertificateUtils;
 import se.swedenconnect.security.credential.BasicCredential;
 import se.swedenconnect.security.credential.PkiCredential;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -70,7 +70,7 @@ public class CAClientServiceConfiguration {
     CMCProperties cmcProperties)
     throws FileNotFoundException, CertificateException, MalformedURLException, NoSuchAlgorithmException,
     OperatorCreationException,
-    JsonProcessingException {
+      JacksonException {
     log.info("Setting up CMC clients for CA instances:");
     Map<String, CMCClient> cmcClientMap = new HashMap<>();
     if (cmcProperties.getInstance() == null || cmcProperties.getInstance().isEmpty()) {

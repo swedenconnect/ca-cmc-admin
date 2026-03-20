@@ -16,8 +16,6 @@
 
 package se.swedenconnect.ca.cmcclient.configuration.profile;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,6 +23,8 @@ import se.swedenconnect.ca.cmcclient.ca.profiles.CertificateProfile;
 import se.swedenconnect.ca.cmcclient.ca.profiles.CertificateProfileRegistry;
 import se.swedenconnect.ca.cmcclient.ca.profiles.impl.PropertyBasedCertificateProfile;
 import se.swedenconnect.ca.cmcclient.configuration.cmc.CMCProperties;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,7 +46,7 @@ public class DefaultCertificateProfileRegistry implements CertificateProfileRegi
 
   @Autowired
   public DefaultCertificateProfileRegistry(Map<String, CertificateProfileProperties.Profile> propertyProfileDataMap, CMCProperties cmcProperties)
-    throws JsonProcessingException {
+    throws JacksonException {
     certificateProfileMap = new HashMap<>();
     this.cmcProperties = cmcProperties;
     registerCertificateProfile("null", null);

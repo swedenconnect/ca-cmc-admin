@@ -16,7 +16,6 @@
 
 package se.swedenconnect.ca.cmcclient.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.cert.X509CertificateHolder;
@@ -35,6 +34,7 @@ import se.swedenconnect.ca.cmcclient.authz.CurrentUser;
 import se.swedenconnect.ca.cmcclient.ca.PublicKeyValidator;
 import se.swedenconnect.ca.cmcclient.data.CertContentDisplayData;
 import se.swedenconnect.ca.cmcclient.utils.CAServiceUtils;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.math.BigInteger;

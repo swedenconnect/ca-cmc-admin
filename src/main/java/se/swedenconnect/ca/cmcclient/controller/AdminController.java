@@ -16,7 +16,6 @@
 
 package se.swedenconnect.ca.cmcclient.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
@@ -56,6 +55,7 @@ import se.swedenconnect.ca.cmcclient.utils.CAServiceUtils;
 import se.swedenconnect.ca.cmcclient.utils.CertificateUtils;
 import se.swedenconnect.ca.engine.ca.attribute.CertAttributes;
 import se.swedenconnect.ca.engine.ca.repository.SortBy;
+import tools.jackson.databind.ObjectMapper;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;

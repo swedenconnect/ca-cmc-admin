@@ -28,7 +28,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.header.writers.frameoptions.XFrameOptionsHeaderWriter;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.Map;
 
@@ -67,11 +66,12 @@ public class SecurityConfiguration {
     http
       .authorizeHttpRequests(authorize -> authorize
         .requestMatchers(
-          new AntPathRequestMatcher("/js/**", HttpMethod.GET.toString()),
-          new AntPathRequestMatcher("/css/**", HttpMethod.GET.toString()),
-          new AntPathRequestMatcher("/img/**", HttpMethod.GET.toString()),
-          new AntPathRequestMatcher("/favicon/**", HttpMethod.GET.toString()),
-          new AntPathRequestMatcher("/webjars/**", HttpMethod.GET.toString())
+            HttpMethod.GET,
+            "/js/**",
+            "/css/**",
+            "/img/**",
+            "/favicon/**",
+            "/webjars/**"
         )
         .permitAll()
         .anyRequest().authenticated()
