@@ -23,7 +23,7 @@
         <credentials-support.version>2.2.0</credentials-support.version>
         <ca-engine.version>2.2.0</ca-engine.version>
         <ca-cmc.version>2.0.0</ca-cmc.version>
-        <print-cert.version>1.0.9</print-cert.version>
+        <print-cert.version>1.0.10</print-cert.version>
 
     </properties>
 
