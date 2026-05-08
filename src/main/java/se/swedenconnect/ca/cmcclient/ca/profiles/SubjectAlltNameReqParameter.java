@@ -31,7 +31,9 @@ import org.bouncycastle.asn1.x509.GeneralName;
 public enum SubjectAlltNameReqParameter {
 
   altNameDnsName(GeneralName.dNSName, "DNS name"),
-  altNameEmail(GeneralName.rfc822Name, "E-mail adress");
+  altNameEmail(GeneralName.rfc822Name, "E-mail address"),
+  altNameUri(GeneralName.uniformResourceIdentifier, "URI"),
+  altNameIpAddress(GeneralName.iPAddress, "IP address");
 
   private final int generalNameIndex;
   private final String inputLabel;
