@@ -45,7 +45,8 @@ public enum AttrReqParameter {
   country(0, CertAttributes.C, "Country"),
   title(10, CertAttributes.T, "Title"),
   locality(11, CertAttributes.L, "Locality"),
-  telephoneNumber(12, CertAttributes.TELEPHONE_NUMBER, "Telephone number");
+  telephoneNumber(12, CertAttributes.TELEPHONE_NUMBER, "Telephone number"),
+  serviceIdentifier(13, new ASN1ObjectIdentifier("0.4.0.19475.99.1"), "Service Identifier");
 
   private final int index;
   private final ASN1ObjectIdentifier attributeOid;
