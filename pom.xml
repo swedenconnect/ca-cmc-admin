@@ -5,13 +5,13 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.3</version>
+        <version>4.1.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <groupId>se.swedenconnect.ca</groupId>
     <artifactId>ca-cmc-admin-client</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.1</version>
 
     <name>CA CMC client base</name>
     <description>CA CMC Client base for administration of CA services</description>
@@ -20,10 +20,10 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>21</java.version>
-        <credentials-support.version>2.2.0</credentials-support.version>
-        <ca-engine.version>2.2.0</ca-engine.version>
-        <ca-cmc.version>2.0.0</ca-cmc.version>
-        <print-cert.version>1.0.9</print-cert.version>
+        <credentials-support.version>2.2.1</credentials-support.version>
+        <ca-engine.version>2.2.1</ca-engine.version>
+        <ca-cmc.version>2.0.1</ca-cmc.version>
+        <print-cert.version>1.0.11</print-cert.version>
 
     </properties>
 
@@ -41,17 +41,17 @@
             <dependency>
                 <groupId>tools.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
-                <version>3.1.0</version>
+                <version>3.2.0</version>
             </dependency>
             <dependency>
                 <groupId>tools.jackson.core</groupId>
                 <artifactId>jackson-core</artifactId>
-                <version>3.1.0</version>
+                <version>3.2.0</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
-                <version>2.21</version>
+                <version>2.22</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -112,7 +112,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.44</version>
+            <version>1.18.46</version>
             <optional>true</optional>
         </dependency>
 
@@ -161,12 +161,12 @@
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-jdk18on</artifactId>
-            <version>1.83</version>
+            <version>1.84</version>
         </dependency>
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcpkix-jdk18on</artifactId>
-            <version>1.83</version>
+            <version>1.84</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>

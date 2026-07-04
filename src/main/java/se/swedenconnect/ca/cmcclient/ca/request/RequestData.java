@@ -37,7 +37,6 @@ import org.bouncycastle.operator.jcajce.JcaContentVerifierProviderBuilder;
 import org.bouncycastle.pkcs.PKCS10CertificationRequest;
 import org.bouncycastle.pkcs.PKCSException;
 import org.bouncycastle.util.encoders.Base64;
-import org.owasp.html.Sanitizers;
 import se.swedenconnect.ca.cmcclient.ca.profiles.AttrReqParameter;
 import se.swedenconnect.ca.cmcclient.ca.profiles.SubjectAlltNameReqParameter;
 import se.swedenconnect.ca.engine.ca.attribute.CertAttributes;
@@ -50,6 +49,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.security.PublicKey;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  * Extract request data from a string representing a certificate or a PKCS#10 request.
@@ -264,40 +264,76 @@ public class RequestData {
   }
 
   /**
-   * Perform OWASP validation of input
+   * Characters / patterns that must never appear in a certificate attribute value because
+   * they are the building blocks of HTML/JavaScript injection:
+   * <ul>
+   *   <li>{@code '<'} and {@code '>'} — would allow HTML/XML tag construction.</li>
+   *   <li>Any {@code '&'} followed somewhere later by {@code ';'} with no whitespace
+   *       between them — i.e. {@code '&'} and {@code ';'} occurring in the same
+   *       whitespace-delimited word, in that order. That is the shape of an HTML entity
+   *       ({@code &name;} or {@code &#nnn;}), so blocking it prevents any entity from
+   *       being expressed (e.g. {@code &amp;}, {@code &#x3C;}, {@code &lt;}). A bare
+   *       {@code '&'} whose word does not also contain a later {@code ';'} stays allowed,
+   *       so names such as "AT&amp;T", "R&amp;D Group AB", or "Smith &amp; Jones AB"
+   *       pass through.</li>
+   *   <li>The literal sequence <code>&#92;u</code> or <code>&#92;U</code> — the
+   *       JavaScript/JSON Unicode escape prefix (e.g. <code>&#92;u003C</code> or
+   *       <code>&#92;u{3C}</code>). Although HTML parsers do not decode these,
+   *       certificate values may be consumed by external tools that feed them through a
+   *       JavaScript or JSON parser; blocking the prefix closes that avenue regardless
+   *       of where the value ends up.</li>
+   *   <li>U+0000 .. U+001F and U+007F — ASCII control characters, used for parser-confusion
+   *       attacks and embedded newlines in DN values.</li>
+   * </ul>
+   * Together these guarantee that no HTML tag, HTML entity, or JavaScript Unicode escape
+   * can be expressed inside the value, regardless of how a downstream tool processes it.
+   */
+  private static final Pattern DN_DISALLOWED =
+      Pattern.compile("[<>\\u0000-\\u001F\\u007F]|&[^\\s]*;|\\\\[uU]");
+
+  /**
+   * Validate a string value intended for inclusion in an X.509 certificate attribute
+   * (subject DN or SAN component).
+   * <p>
+   * The validator rejects characters that could form HTML or JavaScript inside the value,
+   * plus ASCII control characters. All other characters — including {@code +}, apostrophe,
+   * parentheses, {@code @}, accented letters and other Unicode — are accepted; structural
+   * validation appropriate to each ASN.1 string type is performed downstream by the
+   * attribute encoder.
    *
    * @param string string value to validate
-   * @return validated string
-   * @throws IllegalArgumentException if the string does not pass input validation requirements
+   * @return the input string unchanged, if valid
+   * @throws IllegalArgumentException if the string is null, too long, or contains
+   *                                  disallowed content
    */
   public static String validateString(String string) throws IllegalArgumentException {
     return validateString(string, true);
   }
 
   /**
-   * Perform OWASP validation of input
+   * Validate a string value intended for inclusion in an X.509 certificate attribute.
    *
    * @param string string value to validate
-   * @return validated string
-   * @throws IllegalArgumentException if the string does not pass input validation requirements
+   * @param email  retained for binary compatibility with prior versions; the previous
+   *               implementation used an OWASP HTML sanitizer that misinterpreted '@' in
+   *               email-shaped inputs, so callers passed this flag to suppress that. The
+   *               current validator does not need it and the parameter is ignored.
+   * @return the input string unchanged, if valid
+   * @throws IllegalArgumentException if the string is null, too long, or contains
+   *                                  disallowed content
    */
   public static String validateString(String string, boolean email) throws IllegalArgumentException {
     if (string == null) {
       throw new IllegalArgumentException("Null string value");
     }
     if (string.length() > 250) {
-      throw new IllegalArgumentException("String too long (" + string.length() + ") characters exceeds maximum of 250 characters");
+      throw new IllegalArgumentException(
+          "String too long (" + string.length() + ") characters exceeds maximum of 250 characters");
     }
-    String originalString = string;
-    if (email) {
-      string = string.replaceAll("@", "A");
-    }
-
-    String sanitizedStr = Sanitizers.LINKS.sanitize(string);
-    if (!string.equals(sanitizedStr)) {
+    if (DN_DISALLOWED.matcher(string).find()) {
       throw new IllegalArgumentException("String contained illegal content");
     }
-    return originalString;
+    return string;
   }
 
   protected void parseRequestData() {
