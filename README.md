@@ -27,6 +27,8 @@ Build with the following command:
 
 > mvn clean install
 
+Some of the Sweden Connect CA libraries used by this application are published to GitHub Packages, which needs a GitHub token to download from. See [Building with Libraries from GitHub Packages](documentation/github-packages.md).
+
 The master branch of each repo holds the latest code under development. This is typically a SNAPSHOT version.
 For deployment, it is advisable to build a release version. Each release have a corresponding release branch. To build the source code, select the release branch of the latest release version before building the source code.
 
